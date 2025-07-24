@@ -1,3 +1,4 @@
+
 /* ---------- CSS Variables ---------- */
 :root {
   --primary-color: #003366;
@@ -135,6 +136,21 @@ body {
   background-color: #f0f8ff;
 }
 
+/* ---------- Menu Toggle Button ---------- */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.menu-toggle:focus {
+  outline: 2px solid var(--accent-color);
+}
+
 /* ---------- Responsive Design (Header) ---------- */
 @media (max-width: 768px) {
   .site-header {
@@ -156,6 +172,14 @@ body {
     align-items: flex-start;
     width: 100%;
     padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .main-nav.nav-collapsed ul {
+    max-height: 500px; /* Enough to show all items */
+    border-top: 1px solid var(--border-color);
   }
 
   .main-nav li {
@@ -176,15 +200,20 @@ body {
     position: static;
     width: 100%;
     box-shadow: none;
-    display: none; /* Controlled by JavaScript on mobile */
+    display: block; /* Shown within collapsed menu */
     background-color: var(--header-bg);
     border: none;
     margin: 0;
     padding: 0;
+    opacity: 1;
+    transform: translateY(0);
   }
 
-  .dropdown:hover .dropdown-menu {
-    display: none; /* Toggle via JavaScript */
+  .menu-toggle {
+    display: block;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 }
 

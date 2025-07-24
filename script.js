@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
   const carousel = document.querySelector('.features-carousel');
   const prevButton = document.querySelector('.carousel-prev');
@@ -47,7 +48,18 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoScroll();
   }
 
-  // Mobile-friendly dropdown menu
+  // Mobile-friendly navbar toggle
+  const nav = document.querySelector('.main-nav');
+  const menuToggle = document.querySelector('.menu-toggle');
+  if (nav && menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', !isExpanded);
+      nav.classList.toggle('nav-collapsed');
+    });
+  }
+
+  // Mobile-friendly dropdown menu (within collapsed nav)
   document.querySelectorAll('.dropdown').forEach(dropdown => {
     const link = dropdown.querySelector('a');
     const menu = dropdown.querySelector('.dropdown-menu');
