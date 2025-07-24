@@ -51,11 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.dropdown').forEach(dropdown => {
     const link = dropdown.querySelector('a');
     const menu = dropdown.querySelector('.dropdown-menu');
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const isExpanded = link.getAttribute('aria-expanded') === 'true';
-      link.setAttribute('aria-expanded', !isExpanded);
-      menu.style.display = isExpanded ? 'none' : 'block';
-    });
+    if (link && menu) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isExpanded = link.getAttribute('aria-expanded') === 'true';
+        link.setAttribute('aria-expanded', !isExpanded);
+        menu.style.display = isExpanded ? 'none' : 'block';
+      });
+    }
   });
 });
