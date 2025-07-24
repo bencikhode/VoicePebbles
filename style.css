@@ -1,0 +1,671 @@
+/* ---------- CSS Variables ---------- */
+:root {
+  --primary-color: #003366;
+  --accent-color: #007acc;
+  --background-color: #f4f9ff;
+  --header-bg: #e6f0ff;
+  --border-color: #b3cde0;
+  --dropdown-bg: #fff;
+  --dropdown-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --text-color: #333;
+  --slogan-color: #336699;
+}
+
+/* ---------- Global Reset ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--header-bg);
+  padding: 0.625rem 1.25rem; /* 10px 20px */
+  border-bottom: 2px solid var(--border-color);
+}
+
+/* ---------- Logo Section ---------- */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 3.75rem; /* 60px */
+  margin-right: 0.9375rem; /* 15px */
+}
+
+.brand-text .company-name {
+  font-size: 1.5rem; /* 24px */
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.brand-text .slogan {
+  font-size: 0.875rem; /* 14px */
+  color: var(--slogan-color);
+}
+
+/* ---------- Navigation ---------- */
+.main-nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.25rem; /* 20px */
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--primary-color);
+  font-size: 1rem; /* 16px */
+  font-weight: 500;
+  padding: 0.625rem 0.9375rem; /* 10px 15px */
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: var(--accent-color);
+}
+
+/* ---------- Dropdown Menu ---------- */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--dropdown-bg);
+  border: 1px solid #ccc;
+  min-width: 11.25rem; /* 180px */
+  box-shadow: var(--dropdown-shadow);
+  z-index: 1000;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-menu li {
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-menu li:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu li a {
+  padding: 0.625rem 0.9375rem; /* 10px 15px */
+  color: var(--primary-color);
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f0f8ff;
+}
+
+/* ---------- Responsive Design (Header) ---------- */
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .main-nav li {
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+  }
+}
+
+/* ---------- Front Page Section ---------- */
+.front-page-1 {
+  position: relative;
+  background-image: url('images/image1.jpg'); /* Replace with your actual image path */
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 500px; /* Increased height for prominent hero section */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-section {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.overlay {
+  display: none; /* Remove overlay to eliminate blue tint */
+}
+
+.wrap {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+  text-align: center;
+}
+
+.widget_text.widget_custom_html {
+  padding: 2rem;
+  max-width: 700px; /* Wider for better text flow */
+  margin: 0 auto;
+}
+
+.widget_text.widget-wrap {
+  position: relative;
+  z-index: 2; /* Ensure widget content is above any potential overlay */
+}
+
+.widget-title {
+  font-size: 2rem; /* 32px */
+  color: #fff; /* White for contrast against background image */
+  margin-bottom: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Stronger shadow for readability */
+}
+
+.textwidget.custom-html-widget {
+  font-size: 1.1rem; /* 17.6px */
+  color: #fff; /* White for contrast against background image */
+  line-height: 1.8;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Stronger shadow for readability */
+}
+
+.textwidget.custom-html-widget a.button {
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  background-color: var(--accent-color);
+  color: var(--dropdown-bg);
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  position: relative;
+  z-index: 2; /* Ensure button is above any potential overlay */
+}
+
+.textwidget.custom-html-widget a.button:hover {
+  background-color: #005f99;
+  transform: translateY(-2px);
+}
+
+/* ---------- Materials Library Section ---------- */
+.materials-library {
+  padding: 3rem 1.25rem;
+  background-color: var(--background-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.5rem; /* 40px */
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.section-intro {
+  font-size: 1.2rem; /* 19.2px */
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-item {
+  background-color: var(--dropdown-bg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--dropdown-shadow);
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+}
+
+.feature-item h3 {
+  font-size: 1.5rem; /* 24px */
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+}
+
+.feature-item p {
+  font-size: 1rem; /* 16px */
+  color: var(--text-color);
+}
+
+/* ---------- Online Games Section ---------- */
+.online-games {
+  background: linear-gradient(135deg, var(--background-color) 0%, #d6e6ff 100%);
+  padding: 4rem 1.25rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.online-games .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Carousel for Features */
+.features-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1.5rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  scroll-behavior: smooth;
+}
+
+.carousel-item {
+  flex: 0 0 280px;
+  background-color: var(--dropdown-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--dropdown-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  scroll-snap-align: start;
+}
+
+.carousel-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-icon {
+  font-size: 2.5rem;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+
+.carousel-item h3 {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+
+.carousel-item p {
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+/* Carousel Controls */
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.carousel-prev, .carousel-next {
+  background-color: var(--accent-color);
+  color: var(--dropdown-bg);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-prev:hover, .carousel-next:hover {
+  background-color: #005f99;
+}
+
+/* Games Showcase */
+.games-showcase {
+  margin-top: 2rem;
+}
+
+.games-showcase h3 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.game-link {
+  text-decoration: none;
+}
+
+.game-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: var(--dropdown-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.game-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.game-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 51, 102, 0.8);
+  color: #fff;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.game-item:hover .game-caption {
+  transform: translateY(0);
+}
+
+/* Button */
+.online-games .button {
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  background-color: var(--accent-color);
+  color: var(--dropdown-bg);
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 6px;
+  margin-top: 2rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.online-games .button:hover {
+  background-color: #005f99;
+  transform: translateY(-2px);
+}
+
+/* Hide Scrollbar */
+.features-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.features-carousel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ---------- Pricing Section ---------- */
+.pricing {
+  padding: 3rem 1.25rem;
+  background-color: var(--background-color);
+  text-align: center;
+}
+
+.pricing .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.pricing-item {
+  background-color: var(--dropdown-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: var(--dropdown-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pricing-item h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.pricing-item .price {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-item .discount {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.pricing-item .features-list {
+  list-style: none;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.pricing-item .features-list li {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.pricing-item .features-list li::before {
+  content: '✔';
+  color: var(--accent-color);
+  position: absolute;
+  left: 0;
+  font-size: 1rem;
+}
+
+.pricing-item .button {
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  background-color: var(--accent-color);
+  color: var(--dropdown-bg);
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pricing-item .button:hover {
+  background-color: #005f99;
+  transform: translateY(-2px);
+}
+
+/* ---------- Responsive Design (All Sections) ---------- */
+@media (max-width: 768px) {
+  .front-page-1 {
+    min-height: 400px;
+  }
+
+  .wrap {
+    padding: 1.5rem;
+  }
+
+  .widget_text.widget_custom_html {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  .widget-title {
+    font-size: 1.75rem; /* 28px */
+  }
+
+  .textwidget.custom-html-widget {
+    font-size: 1rem; /* 16px */
+  }
+
+  .materials-library {
+    padding: 2rem 1rem;
+  }
+
+  .online-games {
+    padding: 2rem 1rem;
+  }
+
+  .pricing {
+    padding: 2rem 1rem;
+  }
+
+  .section-title {
+    font-size: 2rem; /* 32px */
+  }
+
+  .section-intro {
+    font-size: 1rem; /* 16px */
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-carousel {
+    flex-direction: row;
+  }
+
+  .carousel-item {
+    flex: 0 0 80%;
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-item {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .game-image {
+    height: 120px;
+  }
+
+  .pricing-item {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .pricing-item .price {
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background-color: var(--primary-color);
+  color: var(--dropdown-bg);
+  text-align: center;
+  padding: 2rem 1.25rem;
+}
+
+footer p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+footer ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+footer a {
+  color: var(--dropdown-bg);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+footer a:hover {
+  color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+  footer ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
