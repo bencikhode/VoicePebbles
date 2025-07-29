@@ -1,75 +1,140 @@
-
 document.addEventListener('DOMContentLoaded', () => {
-  const carousel = document.querySelector('.features-carousel');
-  const prevButton = document.querySelector('.carousel-prev');
-  const nextButton = document.querySelector('.carousel-next');
-  let autoScrollInterval;
+    console.log('DOM fully loaded, starting injection');
 
-  if (carousel && prevButton && nextButton) {
-    // Function to scroll to the next item
-    const scrollNext = () => {
-      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-      if (carousel.scrollLeft >= maxScroll) {
-        // Reset to start when reaching the end
-        carousel.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        carousel.scrollBy({ left: 280, behavior: 'smooth' });
-      }
+    const injectPartials = async () => {
+        try {
+            // Inject Navbar
+            const navbarPlaceholder = document.getElementById('navbar-placeholder');
+            if (navbarPlaceholder) {
+                const navbarResponse = await fetch('header.html');
+                if (!navbarResponse.ok) throw new Error(`HTTP error! status: ${navbarResponse.status}`);
+                const navbarHTML = await navbarResponse.text();
+
+                // Create a temporary div to parse the HTML and get only the <nav> element
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = navbarHTML;
+                const navElement = tempDiv.querySelector('.main-nav');
+
+                if (navElement) {
+                    navbarPlaceholder.appendChild(navElement);
+                    console.log('Navbar injected successfully:', navElement);
+
+                    // Initialize mobile menu toggle after injection
+                    initializeMobileMenu();
+                } else {
+                    console.error('No .main-nav element found in header.html');
+                }
+            } else {
+                console.error('Navbar placeholder element not found');
+            }
+
+            // Inject Footer
+            const footerResponse = await fetch('footer.html');
+            if (!footerResponse.ok) throw new Error(`HTTP error! status: ${footerResponse.status}`);
+            const footerHTML = await footerResponse.text();
+
+            const parser = new DOMParser();
+            const footerDoc = parser.parseFromString(footerHTML, 'text/html');
+            const footerElement = footerDoc.querySelector('footer');
+
+            if (footerElement) {
+                document.body.appendChild(footerElement);
+                console.log('Footer injected successfully');
+            } else {
+                console.error('No <footer> element found in footer.html');
+            }
+
+        } catch (error) {
+            console.error('Error in injection process:', error);
+        }
     };
 
-    // Start auto-scrolling every 5 seconds
-    const startAutoScroll = () => {
-      autoScrollInterval = setInterval(scrollNext, 5000);
+    // Function to initialize mobile menu (extracted for clarity)
+    const initializeMobileMenu = () => {
+        const nav = document.querySelector('.main-nav');
+        if (nav) {
+            console.log('Navbar found, initializing mobile menu functionality.');
+            const menuToggle = nav.querySelector('.menu-toggle');
+            const navList = nav.querySelector('ul'); // Get the main ul list
+
+            if (menuToggle && navList) {
+                menuToggle.addEventListener('click', () => {
+                    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                    menuToggle.setAttribute('aria-expanded', !isExpanded);
+                    nav.classList.toggle('nav-collapsed');
+                    // Toggle display for the main navigation list directly
+                    if (nav.classList.contains('nav-collapsed')) {
+                        navList.style.maxHeight = navList.scrollHeight + 'px'; // Expand to content height
+                    } else {
+                        navList.style.maxHeight = '0'; // Collapse
+                    }
+                    console.log('Navbar toggle clicked');
+                });
+
+                // Handle dropdowns on mobile
+                const dropdowns = nav.querySelectorAll('.dropdown > a');
+                dropdowns.forEach(dropdown => {
+                    dropdown.addEventListener('click', (e) => {
+                        // Prevent default link behavior if it's a dropdown trigger
+                        if (window.innerWidth <= 768) { // Only apply on mobile
+                            e.preventDefault();
+                            const dropdownMenu = dropdown.nextElementSibling;
+                            if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+                                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                                dropdown.setAttribute('aria-expanded', dropdown.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+                            }
+                        }
+                    });
+                });
+            } else {
+                console.error('Menu toggle or nav list not found after navbar injection.');
+            }
+        }
     };
 
-    // Stop auto-scrolling
-    const stopAutoScroll = () => {
-      clearInterval(autoScrollInterval);
-    };
 
-    // Manual controls
-    prevButton.addEventListener('click', () => {
-      stopAutoScroll(); // Pause auto-scroll on manual interaction
-      carousel.scrollBy({ left: -280, behavior: 'smooth' });
-      startAutoScroll(); // Restart auto-scroll after interaction
-    });
+    // Carousel functionality (Keep as is)
+    const carousel = document.querySelector('.features-carousel');
+    const prevButton = document.querySelector('.carousel-prev');
+    const nextButton = document.querySelector('.carousel-next');
+    let autoScrollInterval;
 
-    nextButton.addEventListener('click', () => {
-      stopAutoScroll(); // Pause auto-scroll on manual interaction
-      scrollNext();
-      startAutoScroll(); // Restart auto-scroll after interaction
-    });
+    if (carousel && prevButton && nextButton) {
+        const scrollNext = () => {
+            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+            if (carousel.scrollLeft >= maxScroll) {
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                carousel.scrollBy({ left: 280, behavior: 'smooth' });
+            }
+        };
 
-    // Pause auto-scroll on hover
-    carousel.addEventListener('mouseenter', stopAutoScroll);
-    carousel.addEventListener('mouseleave', startAutoScroll);
+        const startAutoScroll = () => {
+            autoScrollInterval = setInterval(scrollNext, 5000);
+        };
 
-    // Start auto-scrolling on page load
-    startAutoScroll();
-  }
+        const stopAutoScroll = () => {
+            clearInterval(autoScrollInterval);
+        };
 
-  // Mobile-friendly navbar toggle
-  const nav = document.querySelector('.main-nav');
-  const menuToggle = document.querySelector('.menu-toggle');
-  if (nav && menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-      menuToggle.setAttribute('aria-expanded', !isExpanded);
-      nav.classList.toggle('nav-collapsed');
-    });
-  }
+        prevButton.addEventListener('click', () => {
+            stopAutoScroll();
+            carousel.scrollBy({ left: -280, behavior: 'smooth' });
+            startAutoScroll();
+        });
 
-  // Mobile-friendly dropdown menu (within collapsed nav)
-  document.querySelectorAll('.dropdown').forEach(dropdown => {
-    const link = dropdown.querySelector('a');
-    const menu = dropdown.querySelector('.dropdown-menu');
-    if (link && menu) {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isExpanded = link.getAttribute('aria-expanded') === 'true';
-        link.setAttribute('aria-expanded', !isExpanded);
-        menu.style.display = isExpanded ? 'none' : 'block';
-      });
+        nextButton.addEventListener('click', () => {
+            stopAutoScroll();
+            scrollNext();
+            startAutoScroll();
+        });
+
+        carousel.addEventListener('mouseenter', stopAutoScroll);
+        carousel.addEventListener('mouseleave', startAutoScroll);
+
+        startAutoScroll();
     }
-  });
+
+    // Execute injection
+    injectPartials();
 });

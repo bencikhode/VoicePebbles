@@ -1,15 +1,15 @@
-
 /* ---------- CSS Variables ---------- */
 :root {
-  --primary-color: #003366;
-  --accent-color: #007acc;
-  --background-color: #f4f9ff;
-  --header-bg: #e6f0ff;
-  --border-color: #b3cde0;
-  --dropdown-bg: #fff;
+  --primary-color: #1366a5; /* Deep Blue */
+  --accent-color: #fd9425; /* Warm Orange */
+  --background-color: #e7f5ff; /* Light Blue */
+  --secondary-color: #4aa35e; /* Vibrant Green */
+  --header-bg: #ffffff; /* White for header background */
+  --border-color: #b3d9e6; /* Soft blue border */
+  --dropdown-bg: #fff; /* White */
   --dropdown-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   --text-color: #333;
-  --slogan-color: #336699;
+  --slogan-color: #1366a5; /* Deep Blue for Slogan */
 }
 
 /* ---------- Global Reset ---------- */
@@ -24,6 +24,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
+  padding-top: 70px; /* Adjusted for fixed header */
 }
 
 /* ---------- Header ---------- */
@@ -32,8 +33,15 @@ body {
   justify-content: space-between;
   align-items: center;
   background-color: var(--header-bg);
-  padding: 0.625rem 1.25rem; /* 10px 20px */
+  padding: 0.625rem 1.25rem;
   border-bottom: 2px solid var(--border-color);
+  min-height: 60px;
+  z-index: 1001;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 /* ---------- Logo Section ---------- */
@@ -43,32 +51,41 @@ body {
 }
 
 .logo {
-  height: 3.75rem; /* 60px */
-  margin-right: 0.9375rem; /* 15px */
+  height: 3.75rem;
+  margin-right: 0.9375rem;
 }
 
 .brand-text .company-name {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
   font-weight: bold;
   color: var(--primary-color);
 }
 
 .brand-text .slogan {
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem;
   color: var(--slogan-color);
+}
+
+.brand-text .company-name a,
+.brand-text .company-name a:hover,
+.brand-text .company-name a:focus,
+.brand-text .company-name a:visited {
+  text-decoration: none !important;
+  color: inherit;
 }
 
 /* ---------- Navigation ---------- */
 .main-nav {
-  display: flex;
-  justify-content: flex-end;
+  display: flex; /* Default for desktop */
+  justify-content: flex-end; /* Align to the right */
   align-items: center;
+  z-index: 1002;
 }
 
 .main-nav ul {
   list-style: none;
-  display: flex;
-  gap: 1.25rem; /* 20px */
+  display: flex; /* Default for desktop (flex-row) */
+  gap: 1.25rem;
   margin: 0;
   padding: 0;
 }
@@ -76,9 +93,9 @@ body {
 .main-nav a {
   text-decoration: none;
   color: var(--primary-color);
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
   font-weight: 500;
-  padding: 0.625rem 0.9375rem; /* 10px 15px */
+  padding: 0.625rem 0.9375rem;
   display: block;
   transition: color 0.3s ease;
 }
@@ -93,55 +110,36 @@ body {
 }
 
 .dropdown-menu {
-  display: none;
+  display: none; /* Hidden by default on desktop until hover */
   position: absolute;
   top: 100%;
   left: 0;
   background-color: var(--dropdown-bg);
-  border: 1px solid #ccc;
-  min-width: 11.25rem; /* 180px */
+  border: 1px solid var(--border-color);
+  min-width: 11.25rem;
   box-shadow: var(--dropdown-shadow);
-  z-index: 1000;
+  z-index: 1003;
   list-style: none;
   padding: 0;
   margin: 0;
-  opacity: 0;
-  transform: translateY(-10px);
+  opacity: 0; /* Hidden for transition */
+  transform: translateY(-10px); /* For initial position for transition */
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* Desktop: Show dropdown on hover */
 .dropdown:hover .dropdown-menu {
   display: block;
   opacity: 1;
   transform: translateY(0);
 }
 
-.dropdown-menu li {
-  border-bottom: 1px solid #eee;
-}
-
-.dropdown-menu li:last-child {
-  border-bottom: none;
-}
-
-.dropdown-menu li a {
-  padding: 0.625rem 0.9375rem; /* 10px 15px */
-  color: var(--primary-color);
-  text-decoration: none;
-  display: block;
-  white-space: nowrap;
-}
-
-.dropdown-menu li a:hover {
-  background-color: #f0f8ff;
-}
-
 /* ---------- Menu Toggle Button ---------- */
 .menu-toggle {
-  display: none;
+  display: none; /* HIDE ON DESKTOP */
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: var(--primary-color);
   cursor: pointer;
   padding: 0.5rem;
@@ -151,40 +149,71 @@ body {
   outline: 2px solid var(--accent-color);
 }
 
-/* ---------- Responsive Design (Header) ---------- */
+/* --- Responsive Design (Header) --- */
 @media (max-width: 768px) {
   .site-header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
+    flex-direction: row; /* Keep logo and nav side-by-side */
+    justify-content: space-between;
+    align-items: center; /* Vertically align them */
+    padding: 0.625rem 1rem; /* Adjust padding for mobile */
   }
 
   .logo-container {
-    margin-bottom: 1rem;
+    flex-grow: 1; /* Allows logo container to take available space */
+    justify-content: flex-start; /* Aligns logo to the left */
+  }
+
+  /* The placeholder for the injected nav */
+  #navbar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Push the main-nav to the right */
   }
 
   .main-nav {
-    width: 100%;
+    flex-direction: column; /* Stack toggle and ul vertically */
+    align-items: flex-end; /* Align toggle to the right within main-nav */
+    position: relative; /* Essential for positioning the mobile menu */
+    width: auto; /* Shrink to fit its content initially (the toggle button) */
+  }
+
+  .menu-toggle {
+    display: block; /* SHOW ON MOBILE */
+    margin-left: 0; /* Reset desktop margin */
+    /* Removed debug color */
   }
 
   .main-nav ul {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    list-style: none;
+    display: flex; /* Always display flex so max-height transition works */
+    flex-direction: column; /* Stack menu items vertically */
+    width: 100vw; /* Take full viewport width */
+    position: fixed; /* Position relative to the viewport */
+    top: 60px; /* Place directly below the header. Adjust if your header height changes. */
+    left: 0;
+    right: 0;
+    background-color: var(--header-bg);
+    box-shadow: var(--dropdown-shadow);
+    max-height: 0; /* Initially hidden with max-height for collapse/expand transition */
+    overflow: hidden; /* Hide content overflowing max-height */
+    transition: max-height 0.3s ease-out; /* Smooth slide effect */
+    border-top: 1px solid var(--border-color); /* Separator */
+    padding-bottom: 1rem; /* Padding at the bottom of the opened menu */
+    padding-left: 1rem; /* Padding for the actual menu items */
+    padding-right: 1rem;
+    z-index: 1000; /* Below fixed header (1001) but above content */
+    /* Removed debug color */
   }
 
+  /* When nav-collapsed class is present, expand the menu */
   .main-nav.nav-collapsed ul {
-    max-height: 500px; /* Enough to show all items */
-    border-top: 1px solid var(--border-color);
+    max-height: 500px; /* Enough height to show all items */
+    /* No need to set display: flex here, it's already set above */
   }
 
   .main-nav li {
     width: 100%;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #eee; /* Light border between menu items */
   }
 
   .main-nav li:last-child {
@@ -192,39 +221,39 @@ body {
   }
 
   .main-nav a {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1rem; /* More padding for touch targets */
     font-size: 1.1rem;
+    /* Removed debug color */
   }
 
+  /* Dropdown Menu on Mobile */
   .dropdown-menu {
-    position: static;
+    position: static; /* Remove absolute positioning on mobile */
     width: 100%;
     box-shadow: none;
-    display: block; /* Shown within collapsed menu */
-    background-color: var(--header-bg);
+    background-color: var(--header-bg); /* Match header background */
     border: none;
-    margin: 0;
-    padding: 0;
-    opacity: 1;
-    transform: translateY(0);
+    padding: 0.5rem 0; /* Some internal padding */
+    display: none; /* HIDDEN by default, controlled by JavaScript on mobile */
+    opacity: 1; /* Always visible when JS toggles display */
+    transform: translateY(0); /* Remove transform */
+    /* Removed debug color */
   }
 
-  .menu-toggle {
-    display: block;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+  /* Override desktop hover effect for dropdown on mobile */
+  .dropdown:hover .dropdown-menu {
+    display: none; /* Ensure it stays hidden on hover on mobile, JS will control */
   }
 }
 
 /* ---------- Front Page Section ---------- */
 .front-page-1 {
   position: relative;
-  background-image: url('images/image1.jpg'); /* Replace with your actual image path */
+  background-image: url('images/image1.jpg');
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  min-height: 500px; /* Increased height for prominent hero section */
+  min-height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -238,7 +267,7 @@ body {
 }
 
 .overlay {
-  display: none; /* Remove overlay to eliminate blue tint */
+  display: none;
 }
 
 .wrap {
@@ -250,28 +279,28 @@ body {
 
 .widget_text.widget_custom_html {
   padding: 2rem;
-  max-width: 700px; /* Wider for better text flow */
+  max-width: 700px;
   margin: 0 auto;
 }
 
 .widget_text.widget-wrap {
   position: relative;
-  z-index: 2; /* Ensure widget content is above any potential overlay */
+  z-index: 2;
 }
 
 .widget-title {
-  font-size: 2rem; /* 32px */
-  color: #fff; /* White for contrast against background image */
+  font-size: 2rem;
+  color: #fff;
   margin-bottom: 1.2rem;
   font-weight: bold;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Stronger shadow for readability */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .textwidget.custom-html-widget {
-  font-size: 1.1rem; /* 17.6px */
-  color: #fff; /* White for contrast against background image */
+  font-size: 1.1rem;
+  color: #fff;
   line-height: 1.8;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Stronger shadow for readability */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .textwidget.custom-html-widget a.button {
@@ -284,11 +313,11 @@ body {
   border-radius: 6px;
   transition: background-color 0.3s ease, transform 0.2s ease;
   position: relative;
-  z-index: 2; /* Ensure button is above any potential overlay */
+  z-index: 2;
 }
 
 .textwidget.custom-html-widget a.button:hover {
-  background-color: #005f99;
+  background-color: #e07b0e;
   transform: translateY(-2px);
 }
 
@@ -305,14 +334,14 @@ body {
 }
 
 .section-title {
-  font-size: 2.5rem; /* 40px */
+  font-size: 2.5rem;
   color: var(--primary-color);
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
 .section-intro {
-  font-size: 1.2rem; /* 19.2px */
+  font-size: 1.2rem;
   color: var(--text-color);
   margin-bottom: 2rem;
   max-width: 800px;
@@ -331,6 +360,7 @@ body {
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: var(--dropdown-shadow);
+  border: 2px solid var(--secondary-color);
   transition: transform 0.3s ease;
 }
 
@@ -339,13 +369,13 @@ body {
 }
 
 .feature-item h3 {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
   color: var(--primary-color);
   margin-bottom: 0.75rem;
 }
 
 .feature-item p {
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
   color: var(--text-color);
 }
 
@@ -392,7 +422,7 @@ body {
 
 .carousel-icon {
   font-size: 2.5rem;
-  color: var(--accent-color);
+  color: var(--secondary-color);
   margin-bottom: 1rem;
 }
 
@@ -428,7 +458,7 @@ body {
 }
 
 .carousel-prev:hover, .carousel-next:hover {
-  background-color: #005f99;
+  background-color: #e07b0e;
 }
 
 /* Games Showcase */
@@ -477,7 +507,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 51, 102, 0.8);
+  background-color: rgba(19, 102, 165, 0.8);
   color: #fff;
   padding: 0.5rem;
   text-align: center;
@@ -505,7 +535,7 @@ body {
 }
 
 .online-games .button:hover {
-  background-color: #005f99;
+  background-color: #e07b0e;
   transform: translateY(-2px);
 }
 
@@ -587,7 +617,7 @@ body {
 
 .pricing-item .features-list li::before {
   content: '✔';
-  color: var(--accent-color);
+  color: var(--secondary-color);
   position: absolute;
   left: 0;
   font-size: 1rem;
@@ -605,8 +635,72 @@ body {
 }
 
 .pricing-item .button:hover {
-  background-color: #005f99;
+  background-color: #e07b0e;
   transform: translateY(-2px);
+}
+
+/* ---------- About Section ---------- */
+.about {
+  padding: 3rem 1.25rem;
+  background-color: var(--background-color);
+  text-align: center;
+}
+
+.about .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-content {
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-content h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin: 1.5rem 0 0.75rem;
+  font-weight: bold;
+}
+
+.about-content p {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.founder-section {
+  margin-bottom: 1.5rem;
+  overflow: auto;
+}
+
+.founder-image {
+  max-width: 200px;
+  border-radius: 8px;
+  margin-right: 1rem;
+  float: left;
+  box-shadow: var(--dropdown-shadow);
+}
+
+.faq-list {
+  list-style: none;
+  padding: 0;
+}
+
+.faq-list li {
+  margin-bottom: 1.5rem;
+}
+
+.faq-list strong {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.faq-list p {
+  margin: 0;
 }
 
 /* ---------- Responsive Design (All Sections) ---------- */
@@ -625,11 +719,11 @@ body {
   }
 
   .widget-title {
-    font-size: 1.75rem; /* 28px */
+    font-size: 1.75rem;
   }
 
   .textwidget.custom-html-widget {
-    font-size: 1rem; /* 16px */
+    font-size: 1rem;
   }
 
   .materials-library {
@@ -644,12 +738,16 @@ body {
     padding: 2rem 1rem;
   }
 
+  .about {
+    padding: 2rem 1rem;
+  }
+
   .section-title {
-    font-size: 2rem; /* 32px */
+    font-size: 2rem;
   }
 
   .section-intro {
-    font-size: 1rem; /* 16px */
+    font-size: 1rem;
   }
 
   .features-grid {
@@ -688,6 +786,20 @@ body {
 
   .pricing-item .price {
     font-size: 1.5rem;
+  }
+
+  .about-content {
+    max-width: 100%;
+  }
+
+  .founder-image {
+    max-width: 150px;
+    float: none;
+    margin-right: 0;
+    margin-bottom: 1rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
