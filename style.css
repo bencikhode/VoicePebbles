@@ -153,12 +153,11 @@ body {
 
   .main-nav ul {
     list-style: none;
-    /* CHANGE HERE: Start with display: none; */
     display: none; /* Hidden by default when menu is closed */
     flex-direction: column; /* Stack menu items vertically */
     width: 100vw; /* Take full viewport width */
     position: fixed; /* Position relative to the viewport */
-    top: 60px; /* Place directly below the header. Adjust if your header height changes. */
+    /* REMOVED: top: 60px; -> This will now be set by JS dynamically */
     left: 0;
     right: 0;
     background-color: var(--header-bg);
@@ -176,7 +175,6 @@ body {
   /* When nav-collapsed class is present, expand the menu */
   .main-nav.nav-collapsed ul {
     max-height: 500px; /* Enough height to show all items */
-    /* CHANGE HERE: Ensure display: flex; is set when expanded */
     display: flex; /* Show with flex for column layout when expanded by JS */
   }
 
@@ -726,29 +724,6 @@ body {
 
   .game-image {
     height: 120px;
-  }
-
-  .pricing-item {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  .pricing-item .price {
-    font-size: 1.5rem;
-  }
-
-  .about-content {
-    max-width: 100%;
-  }
-
-  .founder-image {
-    max-width: 150px;
-    float: none;
-    margin-right: 0;
-    margin-bottom: 1rem;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
   }
 }
 

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM fully loaded, starting injection');
 
   const mainNavPlaceholder = document.getElementById('navbar-placeholder');
+  const siteHeader = document.querySelector('.site-header'); // Get the main header element
 
   const injectPartials = async () => {
     try {
@@ -53,48 +54,53 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggle && navList) {
       console.log('Menu toggle and nav list found within injected navbar for mobile functionality.');
 
-      const toggleMenu = () => {
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', !isExpanded);
-        nav.classList.toggle('nav-collapsed');
-
-        // Toggle max-height for smooth transition
-        if (nav.classList.contains('nav-collapsed')) {
-          navList.style.display = 'flex'; // Make it visible (flex) before expanding
-          navList.style.maxHeight = navList.scrollHeight + 'px'; // Set to actual scroll height
-        } else {
-          navList.style.maxHeight = '0'; // Collapse
-          // Use setTimeout to allow the transition to complete before setting display: none
-          setTimeout(() => {
-            if (!nav.classList.contains('nav-collapsed')) { // Double check if still collapsed
-              navList.style.display = 'none'; // Hide completely after collapsing
-            }
-          }, 300); // This duration should match your CSS transition duration
+      const closeMenu = () => {
+        if (nav.classList.contains('nav-collapsed')) { // Only close if it's open
+            menuToggle.setAttribute('aria-expanded', 'false');
+            nav.classList.remove('nav-collapsed');
+            navList.style.maxHeight = '0'; // Collapse
+            setTimeout(() => {
+                navList.style.display = 'none'; // Hide completely after collapsing
+            }, 300); // Match CSS transition duration
+            console.log('Navbar closed');
         }
-        console.log('Navbar toggle clicked');
+      };
+
+      const openMenu = () => {
+        menuToggle.setAttribute('aria-expanded', 'true');
+        nav.classList.add('nav-collapsed');
+
+        // Dynamically set top position based on header height
+        // Get the current computed height of the site-header
+        const headerHeight = siteHeader.offsetHeight;
+        navList.style.top = headerHeight + 'px';
+
+        navList.style.display = 'flex'; // Make it visible (flex) before expanding
+        navList.style.maxHeight = navList.scrollHeight + 'px'; // Set to actual scroll height
+        console.log('Navbar opened');
+      };
+
+      const toggleMenu = () => {
+        if (nav.classList.contains('nav-collapsed')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
       };
 
       menuToggle.addEventListener('click', toggleMenu);
 
-      // --- REMOVED: Dropdown handling logic for mobile ---
-      // The following section is removed as you no longer want dropdowns
-      /*
-      const dropdownLinks = nav.querySelectorAll('.dropdown > a');
-      dropdownLinks.forEach(dropdownLink => {
-        dropdownLink.addEventListener('click', (e) => {
-          if (window.innerWidth <= 768) {
-            e.preventDefault();
-            const dropdownMenu = dropdownLink.nextElementSibling;
-            if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
-              const isExpanded = dropdownLink.getAttribute('aria-expanded') === 'true';
-              dropdownMenu.style.display = isExpanded ? 'none' : 'block';
-              dropdownLink.setAttribute('aria-expanded', !isExpanded);
-              console.log('Dropdown toggled');
-            }
-          }
-        });
+      // NEW: Close menu when clicking outside
+      document.addEventListener('click', (event) => {
+        // Check if the click is outside the main navigation area and the menu is open
+        const isClickInsideNav = nav.contains(event.target);
+        const isMenuOpen = nav.classList.contains('nav-collapsed');
+
+        if (!isClickInsideNav && isMenuOpen) {
+          closeMenu();
+        }
       });
-      */
+
 
       // Handle resize to reset mobile state for desktop
       const handleResize = () => {
@@ -103,24 +109,18 @@ document.addEventListener('DOMContentLoaded', () => {
           nav.classList.remove('nav-collapsed');
           navList.style.maxHeight = ''; // Remove max-height for desktop
           navList.style.display = ''; // Reset display for desktop (flex by default via CSS)
+          navList.style.top = ''; // Remove dynamic top for desktop
 
           // Reset menu toggle attributes
           menuToggle.setAttribute('aria-expanded', 'false');
-
-          // --- REMOVED: Resetting dropdown menus (no longer applicable) ---
-          /*
-          nav.querySelectorAll('.dropdown-menu').forEach(menu => {
-            menu.style.display = '';
-          });
-          nav.querySelectorAll('.dropdown > a').forEach(link => {
-            link.setAttribute('aria-expanded', 'false');
-          });
-          */
         } else {
             // On mobile, if menu is not collapsed, ensure it's hidden
             if (!nav.classList.contains('nav-collapsed')) {
                 navList.style.display = 'none';
             }
+            // Also, ensure the top position is correct if the menu is open or about to open
+            const headerHeight = siteHeader.offsetHeight;
+            navList.style.top = headerHeight + 'px';
         }
       };
 
