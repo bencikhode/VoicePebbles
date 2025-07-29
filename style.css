@@ -6,7 +6,6 @@
   --secondary-color: #4aa35e; /* Vibrant Green */
   --header-bg: #ffffff; /* White for header background */
   --border-color: #b3d9e6; /* Soft blue border */
-  --dropdown-bg: #fff; /* White */
   --dropdown-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   --text-color: #333;
   --slogan-color: #1366a5; /* Deep Blue for Slogan */
@@ -104,36 +103,6 @@ body {
   color: var(--accent-color);
 }
 
-/* ---------- Dropdown Menu ---------- */
-.dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  display: none; /* Hidden by default on desktop until hover */
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: var(--dropdown-bg);
-  border: 1px solid var(--border-color);
-  min-width: 11.25rem;
-  box-shadow: var(--dropdown-shadow);
-  z-index: 1003;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  opacity: 0; /* Hidden for transition */
-  transform: translateY(-10px); /* For initial position for transition */
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* Desktop: Show dropdown on hover */
-.dropdown:hover .dropdown-menu {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* ---------- Menu Toggle Button ---------- */
 .menu-toggle {
   display: none; /* HIDE ON DESKTOP */
@@ -180,12 +149,12 @@ body {
   .menu-toggle {
     display: block; /* SHOW ON MOBILE */
     margin-left: 0; /* Reset desktop margin */
-    /* Removed debug color */
   }
 
   .main-nav ul {
     list-style: none;
-    display: flex; /* Always display flex so max-height transition works */
+    /* CHANGE HERE: Start with display: none; */
+    display: none; /* Hidden by default when menu is closed */
     flex-direction: column; /* Stack menu items vertically */
     width: 100vw; /* Take full viewport width */
     position: fixed; /* Position relative to the viewport */
@@ -202,13 +171,13 @@ body {
     padding-left: 1rem; /* Padding for the actual menu items */
     padding-right: 1rem;
     z-index: 1000; /* Below fixed header (1001) but above content */
-    /* Removed debug color */
   }
 
   /* When nav-collapsed class is present, expand the menu */
   .main-nav.nav-collapsed ul {
     max-height: 500px; /* Enough height to show all items */
-    /* No need to set display: flex here, it's already set above */
+    /* CHANGE HERE: Ensure display: flex; is set when expanded */
+    display: flex; /* Show with flex for column layout when expanded by JS */
   }
 
   .main-nav li {
@@ -223,26 +192,6 @@ body {
   .main-nav a {
     padding: 0.75rem 1rem; /* More padding for touch targets */
     font-size: 1.1rem;
-    /* Removed debug color */
-  }
-
-  /* Dropdown Menu on Mobile */
-  .dropdown-menu {
-    position: static; /* Remove absolute positioning on mobile */
-    width: 100%;
-    box-shadow: none;
-    background-color: var(--header-bg); /* Match header background */
-    border: none;
-    padding: 0.5rem 0; /* Some internal padding */
-    display: none; /* HIDDEN by default, controlled by JavaScript on mobile */
-    opacity: 1; /* Always visible when JS toggles display */
-    transform: translateY(0); /* Remove transform */
-    /* Removed debug color */
-  }
-
-  /* Override desktop hover effect for dropdown on mobile */
-  .dropdown:hover .dropdown-menu {
-    display: none; /* Ensure it stays hidden on hover on mobile, JS will control */
   }
 }
 
