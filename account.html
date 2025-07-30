@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account - VoicePebbles</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="account.css"> <!-- New CSS for account page -->
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo-container">
+      <img src="images/logo.png" alt="VoicePebbles Logo" class="logo">
+      <div class="brand-text">
+        <h1 class="company-name"><a href="index.html">VoicePebbles</a></h1>
+        <p class="slogan">Learn | Express | Grow</p>
+      </div>
+    </div>
+    <div id="navbar-placeholder"></div>
+  </header>
+
+  <main class="account-main">
+    <div class="container">
+      <h2 class="section-title">My Account</h2>
+
+      <!-- Loading Indicator -->
+      <div id="loading-indicator" class="loading-indicator" style="display: none;">
+        Loading...
+      </div>
+
+      <!-- Authentication Section (Login/Signup) -->
+      <div id="auth-section" class="auth-section">
+        <h3>Login / Sign Up</h3>
+        <form id="auth-form" class="auth-form">
+          <div class="form-group">
+            <label for="auth-email">Email:</label>
+            <input type="email" id="auth-email" required>
+          </div>
+          <div class="form-group">
+            <label for="auth-password">Password:</label>
+            <input type="password" id="auth-password" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" id="login-button" class="button">Login</button>
+            <button type="button" id="signup-button" class="button secondary-button">Sign Up</button>
+          </div>
+          <p id="auth-message" class="message"></p>
+        </form>
+      </div>
+
+      <!-- User Profile Section (Visible after login) -->
+      <div id="profile-section" class="profile-section" style="display: none;">
+        <h3>Welcome, <span id="user-email"></span>!</h3>
+        <div class="user-info">
+            <p><strong>User ID:</strong> <span id="user-id"></span></p>
+            <p>This is your personalized account area. You can manage your settings here.</p>
+            <!-- Example: Displaying a custom user field from Firestore -->
+            <div class="form-group">
+              <label for="user-name">Your Name:</label>
+              <input type="text" id="user-name" placeholder="Enter your name">
+              <button id="save-profile-button" class="button secondary-button">Save Name</button>
+            </div>
+            <p id="profile-message" class="message"></p>
+        </div>
+        <button id="logout-button" class="button">Logout</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer will be injected by script.js -->
+
+  <!-- Link to the new external JavaScript file -->
+  <script src="account.js" type="module"></script>
+</body>
+</html>
