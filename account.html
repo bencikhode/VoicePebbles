@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Account - VoicePebbles</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="account.css"> <!-- New CSS for account page -->
+  <link rel="stylesheet" href="account.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <header class="site-header">
@@ -20,16 +22,16 @@
   </header>
 
   <main class="account-main">
-    <div class="container">
+    <div class="login-widget-container">
       <h2 class="section-title">My Account</h2>
 
-      <!-- Loading Indicator -->
-      <div id="loading-indicator" class="loading-indicator" style="display: none;">
-        Loading...
+      <!-- Loading Indicator - Initially visible -->
+      <div id="loading-indicator" class="loading-indicator" style="display: block;">
+        Loading account details...
       </div>
 
-      <!-- Authentication Section (Login/Signup) -->
-      <div id="auth-section" class="auth-section">
+      <!-- Authentication Section (Login/Signup) - Initially hidden -->
+      <div id="auth-section" class="auth-section" style="display: none;">
         <h3>Login / Sign Up</h3>
         <form id="auth-form" class="auth-form">
           <div class="form-group">
@@ -48,24 +50,45 @@
         </form>
       </div>
 
-      <!-- User Profile Section (Visible after login) -->
+      <!-- User Profile Section (Visible after login) - Initially hidden -->
       <div id="profile-section" class="profile-section" style="display: none;">
-        <h3>Welcome, <span id="user-email"></span>!</h3>
-        <div class="user-info">
-            <p><strong>User ID:</strong> <span id="user-id"></span></p>
-            <p>This is your personalized account area. You can manage your settings here.</p>
-            <!-- Example: Displaying a custom user field from Firestore -->
-            <div class="form-group">
-              <label for="user-name">Your Name:</label>
-              <input type="text" id="user-name" placeholder="Enter your name">
-              <button id="save-profile-button" class="button secondary-button">Save Name</button>
-            </div>
-            <p id="profile-message" class="message"></p>
+        <div class="profile-header">
+          <img id="profile-picture" src="https://placehold.co/100x100/e0e0e0/ffffff?text=User" alt="Profile Picture" class="profile-picture">
+          <h3 class="welcome-heading">Welcome, <span id="user-email"></span>!</h3>
         </div>
+
+        <div class="user-details-grid">
+          <div class="detail-item">
+            <i class="fas fa-id-badge detail-icon"></i>
+            <p><strong>User ID:</strong> <span id="user-id"></span></p>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-info-circle detail-icon"></i>
+            <p>This is your personalized account area. Manage your settings here.</p>
+          </div>
+        </div>
+
+        <div class="form-group profile-name-group">
+          <label for="user-name">Your Name:</label>
+          <input type="text" id="user-name" placeholder="Enter your name">
+          <button id="save-profile-button" class="button secondary-button">Save Name</button>
+        </div>
+        <p id="profile-message" class="message"></p>
+
         <button id="logout-button" class="button">Logout</button>
       </div>
     </div>
   </main>
+
+  <!-- Custom Modal for Messages -->
+  <div id="custom-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h3 id="modal-title"></h3>
+      <p id="modal-message"></p>
+      <button id="modal-ok-button" class="button">OK</button>
+    </div>
+  </div>
 
   <!-- Footer will be injected by script.js -->
 

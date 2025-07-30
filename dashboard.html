@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard - VoicePebbles</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css"> <!-- New CSS for dashboard -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo-container">
+      <img src="images/logo.png" alt="VoicePebbles Logo" class="logo">
+      <div class="brand-text">
+        <h1 class="company-name"><a href="index.html">VoicePebbles</a></h1>
+        <p class="slogan">Learn | Express | Grow</p>
+      </div>
+    </div>
+    <div id="navbar-placeholder"></div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container">
+      <h2 class="section-title">My Dashboard</h2>
+
+      <!-- Loading Indicator -->
+      <div id="loading-indicator" class="loading-indicator" style="display: none;">
+        Loading content...
+      </div>
+
+      <!-- User Welcome and Info -->
+      <div class="welcome-section">
+        <p>Welcome, <span id="dashboard-user-email" class="font-bold"></span></p>
+        <p class="mt-2">This is your personalized learning space. Explore your subscribed content below.</p>
+        <div class="dashboard-actions">
+            <button id="my-settings-button" class="button secondary-button"><i class="fas fa-cog"></i> My Settings</button>
+            <!-- Logout button is now moved inside the settings modal -->
+        </div>
+      </div>
+
+      <!-- Subscription Status -->
+      <div class="subscription-status">
+        <h3>Your Current Plan: <span id="subscription-plan">Loading...</span></h3>
+        <p id="subscription-message"></p>
+        <button id="manage-subscription-button" class="button secondary-button">Manage Subscription</button>
+      </div>
+
+      <!-- Subscribed Content Section -->
+      <section class="subscribed-content-section">
+        <h3>My Subscribed Content</h3>
+        <div id="subscribed-content-grid" class="content-grid">
+          <!-- Subscribed content items will be loaded here by dashboard.js -->
+          <p id="no-subscribed-content" style="display: none;">You currently have no subscribed content. <a href="index.html#pricing">Explore our plans!</a></p>
+        </div>
+      </section>
+
+      <!-- All Available Content Section (for discovery) -->
+      <section class="all-content-section">
+        <h3>Explore All Content</h3>
+        <div id="all-content-grid" class="content-grid">
+          <!-- All available content items will be loaded here by dashboard.js -->
+          <p id="no-available-content" style="display: none;">No content available yet. Please check back later!</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Settings Modal - REMOVED style="display: none;" -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h3 id="settings-modal-title">My Settings</h3>
+
+      <div class="settings-section profile-settings">
+        <h4>Profile Information</h4>
+        <div class="profile-picture-container">
+          <img id="settings-profile-picture" src="https://placehold.co/100x100/e0e0e0/ffffff?text=User" alt="Profile Picture" class="profile-picture-preview">
+          <input type="file" id="profile-picture-upload" accept="image/*" style="display: none;">
+          <label for="profile-picture-upload" class="button small-button upload-button">
+            <i class="fas fa-upload"></i> Upload Photo
+          </label>
+          <button id="remove-profile-picture" class="button small-button remove-button" style="display: none;"><i class="fas fa-trash"></i> Remove Photo</button>
+        </div>
+
+        <div class="form-group">
+          <label for="settings-user-name">Your Display Name:</label>
+          <input type="text" id="settings-user-name" placeholder="Enter your display name">
+        </div>
+
+        <div class="user-id-display">
+          <p>Your unique User ID: <span id="settings-user-id" class="text-sm text-gray-600"></span></p>
+          <button id="copy-user-id-button" class="copy-id-button" title="Copy User ID"><i class="fas fa-copy"></i> Copy ID</button>
+          <p class="user-id-note">This ID is permanent and cannot be changed.</p>
+        </div>
+      </div>
+
+      <div class="settings-section account-actions">
+        <h4>Account Actions</h4>
+        <button id="settings-logout-button" class="button logout-button"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <!-- Add more account actions here if needed -->
+      </div>
+
+      <p id="settings-message" class="message"></p>
+      <button id="save-settings-button" class="button">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- Custom Alert/Confirmation Modal (reused from account.js logic) -->
+  <div id="custom-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h3 id="modal-title"></h3>
+      <p id="modal-message"></p>
+      <button id="modal-ok-button" class="button">OK</button>
+    </div>
+  </div>
+
+  <!-- Footer will be injected by dashboard.js -->
+
+  <!-- Firebase SDKs (CDN) -->
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
