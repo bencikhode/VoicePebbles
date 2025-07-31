@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Dashboard - VoicePebbles</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="dashboard.css"> <!-- New CSS for dashboard -->
+  <link rel="stylesheet" href="dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -31,11 +31,13 @@
 
       <!-- User Welcome and Info -->
       <div class="welcome-section">
-        <p>Welcome, <span id="dashboard-user-email" class="font-bold"></span></p>
-        <p class="mt-2">This is your personalized learning space. Explore your subscribed content below.</p>
-        <div class="dashboard-actions">
-            <button id="my-settings-button" class="button secondary-button"><i class="fas fa-cog"></i> My Settings</button>
-            <!-- Logout button is now moved inside the settings modal -->
+        <div id="welcome-background-image" class="welcome-background-image"></div>
+        <div class="welcome-content-overlay">
+          <p>Welcome, <span id="dashboard-user-name" class="font-bold"></span>!</p>
+          <p class="mt-2">This is your personalized learning space. Explore your subscribed content below.</p>
+          <div class="dashboard-actions">
+              <button id="my-settings-button" class="button secondary-button"><i class="fas fa-cog"></i> My Settings</button>
+          </div>
         </div>
       </div>
 
@@ -67,12 +69,13 @@
     </div>
   </main>
 
-  <!-- Settings Modal - REMOVED style="display: none;" -->
-  <div id="settings-modal" class="modal-overlay">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h3 id="settings-modal-title">My Settings</h3>
-
+  <!-- Settings Sidebar -->
+  <aside id="settings-sidebar" class="settings-sidebar">
+    <div class="sidebar-header">
+      <h3>My Settings</h3>
+      <button class="close-sidebar-button">&times;</button>
+    </div>
+    <div class="sidebar-content">
       <div class="settings-section profile-settings">
         <h4>Profile Information</h4>
         <div class="profile-picture-container">
@@ -105,9 +108,9 @@
       <p id="settings-message" class="message"></p>
       <button id="save-settings-button" class="button">Save Changes</button>
     </div>
-  </div>
+  </aside>
 
-  <!-- Custom Alert/Confirmation Modal (reused from account.js logic) -->
+  <!-- Custom Alert/Confirmation Modal (reused for general messages) -->
   <div id="custom-modal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
       <span class="close-button">&times;</span>

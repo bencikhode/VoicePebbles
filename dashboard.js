@@ -4,7 +4,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, query, getDocs, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js"; // NEW: Firebase Storage
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, uploadBytesResumable } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js"; // Added uploadBytesResumable
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- IMPORTANT: YOUR ACTUAL FIREBASE CONFIGURATION IS PASTED HERE ---
@@ -27,14 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app); // NEW: Initialize Firebase Storage
+    const storage = getStorage(app);
 
     let currentUserId = null; // To store the authenticated user's UID
     let currentUserEmail = null; // To store the authenticated user's email
 
     // DOM Elements
     const loadingIndicator = document.getElementById('loading-indicator');
-    const dashboardUserEmailSpan = document.getElementById('dashboard-user-email');
+    const dashboardUserNameSpan = document.getElementById('dashboard-user-name');
+    const welcomeBackgroundImage = document.getElementById('welcome-background-image'); // Reference to the background image div
     const subscriptionPlanSpan = document.getElementById('subscription-plan');
     const subscriptionMessageP = document.getElementById('subscription-message');
     const subscribedContentGrid = document.getElementById('subscribed-content-grid');
@@ -43,9 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const noAvailableContentMsg = document.getElementById('no-available-content');
     const siteHeader = document.querySelector('.site-header');
 
-    // Settings Modal Elements
-    const settingsModal = document.getElementById('settings-modal');
-    const closeSettingsButton = settingsModal.querySelector('.close-button');
+    // Settings Sidebar Elements
+    const settingsSidebar = document.getElementById('settings-sidebar');
+    const closeSidebarButton = settingsSidebar.querySelector('.close-sidebar-button');
     const mySettingsButton = document.getElementById('my-settings-button');
     const settingsProfilePicture = document.getElementById('settings-profile-picture');
     const profilePictureUpload = document.getElementById('profile-picture-upload');
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveSettingsButton = document.getElementById('save-settings-button');
     const settingsMessage = document.getElementById('settings-message');
 
-    // Custom Alert/Confirmation Modal Elements (reused from account.js logic)
+    // Custom Alert/Confirmation Modal Elements (reused for general messages)
     const customModal = document.getElementById('custom-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalMessage = document.getElementById('modal-message');
@@ -95,16 +96,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Settings Modal Functions ---
-    const openSettingsModal = async () => {
-        console.log('openSettingsModal called.');
+    // --- Settings Sidebar Functions ---
+    const toggleSettingsSidebar = async () => {
+        console.log('toggleSettingsSidebar called.');
         if (!currentUserId) {
             console.log('No currentUserId, showing error modal.');
             showCustomModal('Error', 'You must be logged in to access settings.', true);
             return;
         }
+
+        if (settingsSidebar.classList.contains('open')) {
+            closeSettingsSidebar();
+            return;
+        }
+
         showLoading(true);
-        settingsMessage.textContent = 'Loading settings...'; // Provide immediate feedback
+        settingsMessage.textContent = 'Loading settings...';
         settingsMessage.style.color = 'var(--primary-color)';
         console.log('Loading indicator shown.');
 
@@ -117,17 +124,22 @@ document.addEventListener('DOMContentLoaded', () => {
             settingsProfilePicture.src = userProfile.profilePicUrl || 'https://placehold.co/100x100/e0e0e0/ffffff?text=User';
             settingsUserIdSpan.textContent = currentUserId;
 
-            // Show remove button only if a custom profile picture exists
             removeProfilePictureButton.style.display = userProfile.profilePicUrl ? 'inline-flex' : 'none';
 
-            settingsMessage.textContent = ''; // Clear previous messages
-            console.log('Adding "show" class to settings modal.');
-            settingsModal.classList.add('show');
-            console.log('Settings modal should now be visible.'); // New log
+            settingsMessage.textContent = '';
+            console.log('Adding "open" class to settings sidebar.');
+            settingsSidebar.classList.add('open');
+            const overlay = document.createElement('div');
+            overlay.classList.add('sidebar-overlay');
+            overlay.classList.add('open');
+            document.body.appendChild(overlay);
+
+            overlay.addEventListener('click', closeSettingsSidebar);
+            console.log('Settings sidebar should now be visible.');
         } catch (error) {
             console.error('Error opening settings:', error);
             showCustomModal('Error', 'Failed to load settings. Please try again.', true);
-            settingsMessage.textContent = `Failed to load settings: ${error.message}`; // Update message in modal
+            settingsMessage.textContent = `Failed to load settings: ${error.message}`;
             settingsMessage.style.color = 'red';
         } finally {
             showLoading(false);
@@ -135,19 +147,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const closeSettingsModal = () => {
-        settingsModal.classList.remove('show');
-        console.log('Settings modal closed.');
+    const closeSettingsSidebar = () => {
+        settingsSidebar.classList.remove('open');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+        }
+        console.log('Settings sidebar closed.');
     };
 
-    // --- Event Listeners for Settings Modal ---
-    mySettingsButton.addEventListener('click', openSettingsModal);
-    closeSettingsButton.addEventListener('click', closeSettingsModal);
-    settingsModal.addEventListener('click', (e) => {
-        if (e.target === settingsModal) {
-            closeSettingsModal();
-        }
-    });
+    // --- Event Listeners for Settings Sidebar ---
+    mySettingsButton.addEventListener('click', toggleSettingsSidebar);
+    closeSidebarButton.addEventListener('click', closeSettingsSidebar);
 
     copyUserIdButton.addEventListener('click', () => {
         copyToClipboard(settingsUserIdSpan.textContent);
@@ -156,33 +168,69 @@ document.addEventListener('DOMContentLoaded', () => {
     // Profile Picture Upload
     profilePictureUpload.addEventListener('change', async (e) => {
         const file = e.target.files[0];
-        if (!file) return;
+        if (!file) {
+            console.log('No file selected for upload.');
+            return;
+        }
+
+        console.log(`Attempting to upload file: ${file.name}, type: ${file.type}, size: ${file.size} bytes`);
 
         showLoading(true);
-        settingsMessage.textContent = 'Uploading photo...';
+        settingsMessage.textContent = 'Uploading photo... 0%'; // Initial message with 0%
         settingsMessage.style.color = 'var(--primary-color)';
 
         try {
             const storageRef = ref(storage, `profilePictures/${currentUserId}/${file.name}`);
-            const snapshot = await uploadBytes(storageRef, file);
-            const downloadURL = await getDownloadURL(snapshot.ref);
+            const uploadTask = uploadBytesResumable(storageRef, file); // Use uploadBytesResumable for progress
 
-            // Update user profile in Firestore with new URL
-            await updateDoc(doc(db, `artifacts/${appId}/users/${currentUserId}/profile/data`), {
-                profilePicUrl: downloadURL
-            });
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log(`Upload progress: ${Math.round(progress)}%`);
+                    settingsMessage.textContent = `Uploading photo... ${Math.round(progress)}%`;
+                    settingsMessage.style.color = 'var(--primary-color)';
+                },
+                (error) => {
+                    // Handle unsuccessful uploads
+                    console.error('Firebase Storage Upload Error:', error);
+                    let errorMessage = `Failed to upload photo: ${error.message}`;
+                    if (error.code === 'storage/unauthorized') {
+                        errorMessage = 'Permission denied. Check Firebase Storage Rules.';
+                    } else if (error.code === 'storage/canceled') {
+                        errorMessage = 'Upload cancelled.';
+                    } else if (error.code === 'storage/quota-exceeded') {
+                        errorMessage = 'Storage quota exceeded.';
+                    }
+                    settingsMessage.textContent = errorMessage;
+                    settingsMessage.style.color = 'red';
+                    showLoading(false);
+                },
+                async () => {
+                    // Handle successful uploads on complete
+                    console.log('Upload complete. Getting download URL...');
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    console.log('Download URL:', downloadURL);
 
-            settingsProfilePicture.src = downloadURL; // Update preview
-            removeProfilePictureButton.style.display = 'inline-flex'; // Show remove button
-            settingsMessage.textContent = 'Profile picture updated successfully!';
-            settingsMessage.style.color = 'green';
-            // Also update the main dashboard email display if it uses the profile pic
-            // (currently dashboard.html doesn't show profile pic directly, but good practice)
+                    // Update user profile in Firestore with new URL
+                    console.log('Updating Firestore with new profile picture URL...');
+                    await updateDoc(doc(db, `artifacts/${appId}/users/${currentUserId}/profile/data`), {
+                        profilePicUrl: downloadURL
+                    });
+                    console.log('Firestore updated successfully.');
+
+                    settingsProfilePicture.src = downloadURL; // Update sidebar preview
+                    welcomeBackgroundImage.style.backgroundImage = `url('${downloadURL}')`; // Update dashboard background image
+                    removeProfilePictureButton.style.display = 'inline-flex';
+                    settingsMessage.textContent = 'Profile picture updated successfully!';
+                    settingsMessage.style.color = 'green';
+                    showLoading(false);
+                }
+            );
         } catch (error) {
-            console.error('Error uploading profile picture:', error);
-            settingsMessage.textContent = `Failed to upload photo: ${error.message}`;
+            console.error('Error initiating upload (catch block):', error);
+            settingsMessage.textContent = `Failed to initiate upload: ${error.message}`;
             settingsMessage.style.color = 'red';
-        } finally {
             showLoading(false);
         }
     });
@@ -209,8 +257,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     profilePicUrl: ''
                 });
 
-                settingsProfilePicture.src = 'https://placehold.co/100x100/e0e0e0/ffffff?text=User'; // Reset preview
-                removeProfilePictureButton.style.display = 'none'; // Hide remove button
+                settingsProfilePicture.src = 'https://placehold.co/100x100/e0e0e0/ffffff?text=User'; // Reset sidebar preview
+                welcomeBackgroundImage.style.backgroundImage = `url('https://placehold.co/600x400/e0e0e0/ffffff?text=User+Profile')`; // Reset dashboard background image
+                removeProfilePictureButton.style.display = 'none';
                 settingsMessage.textContent = 'Profile picture removed successfully!';
                 settingsMessage.style.color = 'green';
             } else {
@@ -238,9 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
         settingsMessage.style.color = 'var(--primary-color)';
 
         try {
+            const newName = settingsUserNameInput.value;
             await updateDoc(doc(db, `artifacts/${appId}/users/${currentUserId}/profile/data`), {
-                name: settingsUserNameInput.value
+                name: newName
             });
+            dashboardUserNameSpan.textContent = newName || currentUserEmail; // Update dashboard user name
             settingsMessage.textContent = 'Settings saved successfully!';
             settingsMessage.style.color = 'green';
         } catch (error) {
@@ -252,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Logout Handler (moved inside settings modal) ---
+    // --- Logout Handler (moved inside settings sidebar) ---
     settingsLogoutButton.addEventListener('click', async () => {
         showLoading(true);
         try {
@@ -325,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Fetch User Profile Data (reused for settings modal) ---
+    // --- Fetch User Profile Data (reused for settings sidebar) ---
     const fetchUserProfileData = async (uid) => {
         const docRef = doc(db, `artifacts/${appId}/users/${uid}/profile/data`);
         const docSnap = await getDoc(docRef);
@@ -545,7 +596,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (user) {
             currentUserId = user.uid;
             currentUserEmail = user.email; // Store the email
-            dashboardUserEmailSpan.textContent = user.email;
+
+            // Fetch user profile data immediately upon auth state change
+            const userProfile = await fetchUserProfileData(currentUserId);
+
+            // Update dashboard welcome message with name or email
+            dashboardUserNameSpan.textContent = userProfile.name || user.email;
+            // Update dashboard background image
+            welcomeBackgroundImage.style.backgroundImage = `url('${userProfile.profilePicUrl || 'https://placehold.co/600x400/e0e0e0/ffffff?text=User+Profile'}')`;
+
+
             // Fetch and display content only after user is authenticated
             await fetchAndDisplayContent(currentUserId);
         } else {

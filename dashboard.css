@@ -120,8 +120,6 @@ body {
     padding: 3rem 1.5rem; /* Increased padding */
     background-color: var(--background-color);
     flex-grow: 1; /* Allow main content to expand */
-    /* Removed min-height calc here to let flex-grow handle it,
-       and ensure content pushes footer down */
     display: flex;
     flex-direction: column;
     align-items: center; /* Center content horizontally */
@@ -158,115 +156,91 @@ body {
     border-radius: 2px;
 }
 
-/* Welcome Section - Enhanced */
+/* Welcome Section - Enhanced for background image */
 .welcome-section {
-    background-color: var(--header-bg);
-    padding: 2.5rem; /* More generous padding */
-    border-radius: 15px; /* Even more rounded corners */
-    box-shadow: 0 8px 20px var(--shadow-medium); /* Deeper shadow */
+    background-color: var(--header-bg); /* Fallback */
+    padding: 0; /* Remove padding here, will be on overlay */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px var(--shadow-medium);
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Needed for absolute positioning of background and overlay */
+    overflow: hidden; /* Ensures background image stays within rounded corners */
+    min-height: 200px; /* Minimum height for the section */
+}
+
+/* Background image div */
+.welcome-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat;
+    filter: brightness(0.7) blur(2px); /* Darken and blur for readability */
+    transition: background-image 0.5s ease-in-out, filter 0.3s ease;
+    z-index: 1; /* Behind the content overlay */
+    border-radius: 15px; /* Match parent border-radius */
+}
+
+/* Overlay for content to ensure readability */
+.welcome-content-overlay {
+    position: relative; /* Positioned above the background image */
+    z-index: 2; /* Above the background image */
+    padding: 2.5rem; /* Apply original padding here */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.8rem;
-    border: 1px solid var(--border-color);
-    position: relative;
-    overflow: hidden; /* For background effects */
-    background: var(--header-bg); /* Fallback */
+    color: white; /* Ensure text is readable over dark background */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Stronger text shadow */
+    background: linear-gradient(to right, rgba(0,0,0,0.4), rgba(0,0,0,0.1)); /* Subtle gradient overlay */
+    border-radius: 15px; /* Match parent border-radius */
+    flex-grow: 1; /* Allow overlay to take full height */
+    justify-content: center; /* Vertically center content if needed */
 }
 
-.welcome-section::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 150px;
-    height: 150px;
-    background-color: var(--primary-color);
-    opacity: 0.1;
-    border-radius: 50%;
-    filter: blur(30px);
+.welcome-content-overlay p {
+    color: white; /* Override inherited text color */
+    margin-bottom: 0; /* Reset margin */
 }
 
-.welcome-section::after {
-    content: '';
-    position: absolute;
-    bottom: -50px;
-    left: -50px;
-    width: 120px;
-    height: 120px;
-    background-color: var(--accent-color);
-    opacity: 0.1;
-    border-radius: 50%;
-    filter: blur(25px);
+.welcome-content-overlay .font-bold {
+    color: white; /* Ensure bold text is white */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Stronger shadow for name */
 }
 
-
-.welcome-section p {
-    font-size: 1.15rem;
-    color: var(--light-text-color);
-    margin-bottom: 0;
+/* Dashboard actions container for buttons */
+.dashboard-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem; /* Space between buttons */
+    width: 100%; /* Take full width */
+    justify-content: flex-start; /* Align buttons to the left */
 }
 
-.welcome-section .font-bold {
-    font-weight: 800; /* Extra bold */
-    color: var(--primary-color);
-    font-size: 1.8rem; /* Larger welcome email */
-    display: block;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Subtle text shadow */
-}
-
-.welcome-section .text-sm {
-    font-size: 0.9rem;
-    color: #888; /* Even more muted for User ID */
-    display: inline-flex; /* Use flex for alignment with button */
-    align-items: center;
-    gap: 0.5rem; /* Space between ID and button */
-}
-
-.welcome-section .logout-button {
-    margin-top: 2rem; /* More space for logout button */
-    background-color: #dc3545; /* Red for logout */
+/* My Settings button specific styling */
+#my-settings-button {
     padding: 0.9rem 1.8rem;
     font-size: 1.05rem;
     border-radius: 8px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-}
-
-.welcome-section .logout-button:hover {
-    background-color: #c82333;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-}
-
-/* Copy ID button styling */
-.copy-id-button {
-    background: none;
-    border: 1px solid var(--border-color); /* Subtle border */
-    color: var(--primary-color);
-    cursor: pointer;
-    font-size: 0.9rem; /* Smaller icon */
-    margin-left: 0.5rem;
-    padding: 0.4rem 0.6rem;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    vertical-align: middle;
-    box-shadow: 0 2px 4px var(--shadow-light);
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-}
-
-.copy-id-button:hover {
-    background-color: var(--primary-color);
+    gap: 0.5rem;
+    background-color: var(--accent-color); /* Ensure button is visible over background */
     color: white;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 6px var(--shadow-medium);
 }
 
-.copy-id-button:active {
-    transform: translateY(0);
+#my-settings-button:hover {
+    background-color: #e07b0e;
+}
+
+#my-settings-button i {
+    font-size: 1.1em;
 }
 
 /* Subscription Status - Enhanced */
@@ -485,6 +459,292 @@ body {
     color: #e07b0e;
 }
 
+/* --- Settings Sidebar Specific Styles --- */
+.settings-sidebar {
+    position: fixed;
+    top: 0;
+    right: -350px; /* Hidden by default */
+    width: 350px; /* Fixed width for the sidebar */
+    height: 100vh;
+    background-color: var(--header-bg);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensure it's above other content */
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    box-sizing: border-box; /* Include padding in width */
+    overflow-y: auto; /* Enable scrolling for long content */
+}
+
+.settings-sidebar.open {
+    right: 0; /* Slide into view */
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h3 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin: 0;
+    font-weight: 700;
+}
+
+.close-sidebar-button {
+    background: none;
+    border: none;
+    font-size: 2.5rem; /* Larger close button */
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-sidebar-button:hover {
+    color: #333;
+}
+
+.sidebar-content {
+    flex-grow: 1; /* Allows content to fill remaining space */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Space between settings sections */
+}
+
+.settings-section {
+    background-color: #f8f9fa; /* Light background for sections within sidebar */
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.settings-section h4 {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.settings-section h4::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background-color: var(--secondary-color);
+    border-radius: 1px;
+}
+
+.profile-picture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-picture-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.profile-picture-preview:hover {
+    transform: scale(1.05);
+}
+
+.upload-button, .remove-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 5px var(--shadow-light);
+}
+
+.upload-button {
+    background-color: var(--secondary-color);
+}
+.upload-button:hover {
+    background-color: #3a8a4d;
+}
+
+.remove-button {
+    background-color: #dc3545; /* Red for remove */
+}
+.remove-button:hover {
+    background-color: #c82333;
+}
+
+.user-id-display {
+    background-color: #e7f5ff; /* Light blue background for ID */
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px dashed var(--primary-color); /* Dashed border */
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.user-id-display p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.user-id-display .text-sm { /* For the actual ID span */
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    word-break: break-all; /* Break long IDs */
+}
+
+.user-id-note {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+/* Copy ID button styling within settings sidebar */
+.copy-id-button {
+    background: none;
+    border: 1px solid var(--primary-color); /* Primary color border */
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    vertical-align: middle;
+    box-shadow: 0 1px 3px var(--shadow-light);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.copy-id-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px var(--shadow-medium);
+}
+
+.copy-id-button:active {
+    transform: translateY(0);
+}
+
+.settings-sidebar .form-group { /* General form group for sidebar */
+    margin-bottom: 1.25rem;
+}
+
+.settings-sidebar .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.settings-sidebar .form-group input[type="text"] {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #f0f4f8;
+    transition: all 0.3s ease;
+}
+
+.settings-sidebar .form-group input[type="text"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(19, 102, 165, 0.2);
+    background-color: #ffffff;
+    outline: none;
+}
+
+.settings-section.account-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.settings-section .logout-button {
+    background-color: #dc3545;
+    padding: 0.9rem 1.8rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Full width within settings section */
+}
+
+.settings-section .logout-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+#settings-message {
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    min-height: 1.2em; /* Reserve space for message */
+    text-align: center; /* Center message in sidebar */
+}
+
+#save-settings-button {
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    font-weight: 700;
+    width: auto; /* Allow button to size naturally */
+    align-self: center; /* Center the save button */
+}
+
+/* Overlay for when sidebar is open */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 999; /* Below sidebar, above content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
@@ -510,6 +770,20 @@ body {
     .content-item-image {
         height: 160px;
     }
+    /* Adjust sidebar width for smaller screens */
+    .settings-sidebar {
+        width: 300px;
+        right: -300px;
+    }
+    .settings-sidebar.open {
+        right: 0;
+    }
+    .sidebar-header h3 {
+        font-size: 1.6rem;
+    }
+    .settings-section h4 {
+        font-size: 1.2rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -519,18 +793,24 @@ body {
     .section-title {
         font-size: 2rem;
     }
-    .welcome-section,
-    .subscription-status,
-    .subscribed-content-section,
-    .all-content-section {
-        padding: 1.5rem;
-        border-radius: 10px;
+    .welcome-section {
+        min-height: 180px; /* Adjust min height for smaller screens */
+    }
+    .welcome-content-overlay {
+        padding: 1.5rem; /* Adjust padding for smaller screens */
     }
     .welcome-section .font-bold {
         font-size: 1.5rem;
     }
     .welcome-section p {
         font-size: 1rem;
+    }
+    .dashboard-actions {
+        flex-direction: column; /* Stack dashboard action buttons */
+        gap: 0.8rem;
+    }
+    #my-settings-button {
+        width: 100%; /* Full width on small screens */
     }
     .subscribed-content-section h3,
     .all-content-section h3 {
@@ -556,21 +836,84 @@ body {
     .content-item-price {
         font-size: 1.1rem;
     }
+    /* Sidebar takes full width on very small screens */
+    .settings-sidebar {
+        width: 100%;
+        right: -100%; /* Hide fully */
+    }
+    .settings-sidebar.open {
+        right: 0;
+    }
+    .sidebar-header h3 {
+        font-size: 1.4rem;
+    }
+    .settings-section h4 {
+        font-size: 1.1rem;
+    }
+    .profile-picture-preview {
+        width: 100px;
+        height: 100px;
+    }
+    .upload-button, .remove-button {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+    }
+    .user-id-display {
+        flex-direction: column; /* Stack ID and copy button */
+        gap: 0.2rem;
+        text-align: center;
+    }
+    .copy-id-button {
+        margin-left: 0; /* Remove left margin when stacked */
+    }
+    .settings-section .logout-button, #save-settings-button {
+        width: 100%; /* Full width in sidebar on small screens */
+    }
 }
 
 @media (max-width: 480px) {
     .welcome-section {
+        padding: 0; /* Ensure padding is on overlay for small screens too */
+        min-height: 160px;
+    }
+    .welcome-content-overlay {
         padding: 1.2rem;
     }
     .welcome-section .font-bold {
         font-size: 1.3rem;
     }
-    .copy-id-button {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.5rem;
+    .dashboard-actions {
+        gap: 0.5rem;
     }
-    .logout-button {
+    #my-settings-button {
         padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    .sidebar-header h3 {
+        font-size: 1.2rem;
+    }
+    .close-sidebar-button {
+        font-size: 2rem;
+    }
+    .settings-section h4 {
+        font-size: 1rem;
+    }
+    .profile-picture-preview {
+        width: 80px;
+        height: 80px;
+    }
+    .user-id-display p, .user-id-display .text-sm {
+        font-size: 0.85rem;
+    }
+    .user-id-note {
+        font-size: 0.75rem;
+    }
+    .copy-id-button {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+    .settings-section .logout-button, #save-settings-button {
+        padding: 0.8rem 1.2rem;
         font-size: 0.9rem;
     }
 }
