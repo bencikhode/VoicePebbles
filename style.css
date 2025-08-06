@@ -1105,6 +1105,8 @@ footer {
 
 @media (max-width: 480px) {
     .logo {
+        background-color:#ffffff;
+        border-radius: 25%;
         height: 40px;
     }
     .company-name {

@@ -271,19 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            const footerResponse = await fetch('footer.html');
-            if (!footerResponse.ok) throw new Error(`HTTP error! status: ${footerResponse.status}`);
-            const footerHTML = await footerResponse.text();
-            const parser = new DOMParser();
-            const footerDoc = parser.parseFromString(footerHTML, 'text/html');
-            const footerElement = footerDoc.querySelector('footer');
-
-            if (footerElement) {
-                document.body.appendChild(footerElement);
-                console.log('Footer injected successfully into account.html');
-            } else {
-                console.error('No <footer> element found in footer.html');
-            }
+        
 
         } catch (error) {
             console.error('Error injecting partials into account.html:', error);

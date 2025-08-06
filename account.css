@@ -1,41 +1,55 @@
 /* account.css - Specific styles for the account page with new design */
 
+/* Global HTML and Body setup for full height */
+html, body {
+    height: 100%; /* Ensure html and body take full height */
+    margin: 0;
+    padding: 0;
+}
+
 /* Body and main container for background image and centering */
 body {
-    background-image: url('https://placehold.co/1920x1080/1366a5/ffffff?text=Background+Image'); /* Placeholder: Replace with your actual background image */
-    background-size: cover;
-    background-position: center;
+    background-image: url('images/acc_bg.jpg'); /* Placeholder: Replace with your actual background image */
+    background-position: center center;
     background-repeat: no-repeat;
-    min-height: 100vh; /* Ensure it covers full viewport height */
+    background-size: cover;
+    color: var(--text-color);
     display: flex;
     flex-direction: column; /* For header, main, footer layout */
     font-family: 'Inter', sans-serif;
-    color: var(--text-color);
+    min-height: 100vh; /* Ensure it covers full viewport height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: hidden; /* Prevent vertical scrolling on the body */
+    padding-top: 70px; /* Adjusted for fixed header */
 }
 
 .account-main {
-    flex-grow: 1; /* Allows main content to take available space */
-    display: flex;
-    justify-content: center;
     align-items: center;
+    display: flex;
+    flex-grow: 1; /* Allows main content to take available space */
+    justify-content: center;
     padding: 2rem 1.25rem; /* Padding around the central widget */
     position: relative; /* For z-index if needed */
     z-index: 1; /* Ensure it's above any potential background overlays */
+    overflow-y: auto; /* Allow scrolling within this container if content overflows */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    height: calc(100vh - 70px); /* Fill remaining height, accounting for header */
 }
+
 
 /* New: Styling for the central login/signup widget container */
 .login-widget-container {
+    animation: fadeInScale 0.5s ease-out forwards; /* Animation on load */
+    backdrop-filter: blur(5px); /* Subtle blur effect behind the widget */
     background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white background */
-    padding: 3rem 2.5rem; /* Generous padding inside the widget */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for subtle depth */
     border-radius: 15px; /* More rounded corners */
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Stronger, more diffused shadow */
-    width: 100%;
     max-width: 480px; /* Max width for the widget */
+    padding: 3rem 2.5rem; /* Generous padding inside the widget */
     text-align: center;
-    backdrop-filter: blur(5px); /* Subtle blur effect behind the widget */
+    width: 100%;
     -webkit-backdrop-filter: blur(5px); /* Safari support */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for subtle depth */
-    animation: fadeInScale 0.5s ease-out forwards; /* Animation on load */
 }
 
 @keyframes fadeInScale {
@@ -50,33 +64,33 @@ body {
 }
 
 .account-main .section-title {
-    font-size: 2.2rem; /* Adjusted title size for the widget */
     color: var(--primary-color);
-    margin-bottom: 2rem;
+    font-size: 2.2rem; /* Adjusted title size for the widget */
     font-weight: 700;
-    position: relative;
+    margin-bottom: 2rem;
     padding-bottom: 0.5rem;
+    position: relative;
     text-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .account-main .section-title::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
     background-color: var(--accent-color);
     border-radius: 2px;
+    bottom: 0;
+    content: '';
+    height: 3px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    width: 60px;
 }
 
 /* Authentication Section (Login/Signup) */
 .auth-section h3 {
-    font-size: 1.8rem; /* Smaller heading within the widget */
     color: var(--primary-color);
-    margin-bottom: 1.5rem;
+    font-size: 1.8rem; /* Smaller heading within the widget */
     font-weight: 600;
+    margin-bottom: 1.5rem;
 }
 
 .form-group {
@@ -85,32 +99,32 @@ body {
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.6rem; /* More space below label */
-    font-weight: 600;
     color: var(--light-text-color); /* Slightly lighter label color */
+    display: block;
     font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem; /* More space below label */
 }
 
 .form-group input[type="email"],
 .form-group input[type="password"],
 .form-group input[type="text"] {
-    width: 100%;
-    padding: 1rem 1.2rem; /* Larger padding for inputs */
+    background-color: #f0f4f8; /* Light grey background for inputs */
     border: 1px solid var(--border-color);
     border-radius: 10px; /* More rounded inputs */
-    font-size: 1.1rem; /* Larger font in inputs */
     box-sizing: border-box;
-    background-color: #f0f4f8; /* Light grey background for inputs */
+    font-size: 1.1rem; /* Larger font in inputs */
+    padding: 1rem 1.2rem; /* Larger padding for inputs */
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .form-group input[type="email"]:focus,
 .form-group input[type="password"]:focus,
 .form-group input[type="text"]:focus {
+    background-color: #ffffff; /* White background on focus */
     border-color: var(--primary-color);
     box-shadow: 0 0 0 4px rgba(19, 102, 165, 0.3); /* Stronger focus shadow */
-    background-color: #ffffff; /* White background on focus */
     outline: none;
 }
 
@@ -122,23 +136,23 @@ body {
 }
 
 .form-actions .button {
-    width: 100%; /* Full width buttons */
-    padding: 1rem 1.5rem; /* Larger button padding */
-    font-size: 1.1rem; /* Larger button font */
+    background-color: var(--accent-color); /* Primary button color */
+    border: none;
     border-radius: 10px; /* More rounded buttons */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Stronger button shadow */
-    font-weight: 700;
-    background-color: var(--accent-color); /* Primary button color */
     color: white;
-    border: none;
     cursor: pointer;
+    font-size: 1.1rem; /* Larger button font */
+    font-weight: 700;
+    padding: 1rem 1.5rem; /* Larger button padding */
     transition: all 0.3s ease;
+    width: 100%; /* Full width buttons */
 }
 
 .form-actions .button:hover {
-    transform: translateY(-3px); /* More pronounced lift on hover */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     background-color: #e07b0e; /* Darker orange on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px); /* More pronounced lift on hover */
 }
 
 .form-actions .button.secondary-button {
@@ -151,35 +165,35 @@ body {
 
 /* Profile Section (Visible after login) - ENHANCED */
 .profile-section {
-    padding: 2rem; /* Consistent padding with auth-section */
+    align-items: center;
+    backdrop-filter: blur(5px);
     background-color: rgba(255, 255, 255, 0.95); /* Consistent background */
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 15px; /* Consistent border-radius */
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Consistent shadow */
-    text-align: center;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
     display: flex; /* Use flexbox for internal layout */
     flex-direction: column;
-    align-items: center;
+    padding: 2rem; /* Consistent padding with auth-section */
+    text-align: center;
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .profile-header {
-    margin-bottom: 1.5rem;
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 0.8rem;
+    margin-bottom: 1.5rem;
 }
 
 .profile-picture {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%; /* Circular profile picture */
-    object-fit: cover;
     border: 3px solid var(--primary-color); /* Border around profile pic */
+    border-radius: 50%; /* Circular profile picture */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 100px;
+    object-fit: cover;
     transition: transform 0.3s ease;
+    width: 100px;
 }
 
 .profile-picture:hover {
@@ -187,36 +201,36 @@ body {
 }
 
 .welcome-heading {
-    font-size: 1.8rem;
     color: var(--primary-color);
-    margin-bottom: 0.5rem; /* Reduced margin */
+    font-size: 1.8rem;
     font-weight: 700;
+    margin-bottom: 0.5rem; /* Reduced margin */
 }
 
 .welcome-heading #user-email {
-    font-weight: 800; /* Make email bolder */
     color: var(--accent-color); /* Highlight email */
+    font-weight: 800; /* Make email bolder */
 }
 
 .user-details-grid {
     display: grid;
-    grid-template-columns: 1fr; /* Stack on small screens */
     gap: 1rem;
-    width: 100%;
+    grid-template-columns: 1fr; /* Stack on small screens */
     margin-bottom: 2rem;
     text-align: left;
+    width: 100%;
 }
 
 .detail-item {
-    background-color: #f0f4f8; /* Light grey background for detail items */
-    padding: 1rem 1.2rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    display: flex;
     align-items: center;
-    gap: 0.8rem;
-    font-size: 0.95rem;
+    background-color: #f0f4f8; /* Light grey background for detail items */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     color: var(--text-color);
+    display: flex;
+    font-size: 0.95rem;
+    gap: 0.8rem;
+    padding: 1rem 1.2rem;
 }
 
 .detail-item .detail-icon {
@@ -229,44 +243,44 @@ body {
 }
 
 .profile-name-group {
-    margin-bottom: 2rem; /* More space below name input */
-    width: 100%; /* Ensure it takes full width within the widget */
+    align-items: flex-start; /* Align label/input to left */
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align label/input to left */
+    margin-bottom: 2rem; /* More space below name input */
+    width: 100%; /* Ensure it takes full width within the widget */
 }
 
 .profile-name-group .button {
+    align-self: flex-end; /* Align save button to the right */
     margin-top: 1rem; /* Space between input and save button */
     width: auto; /* Allow button to size naturally */
-    align-self: flex-end; /* Align save button to the right */
 }
 
 
 .profile-section .logout-button {
     background-color: #dc3545;
-    margin-top: 1.5rem; /* Space for logout button */
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    font-size: 1.1rem;
     font-weight: 700;
+    margin-top: 1.5rem; /* Space for logout button */
+    padding: 1rem 2rem;
     width: 100%; /* Make logout button full width */
 }
 
 .profile-section .logout-button:hover {
     background-color: #c82333;
-    transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px);
 }
 
 /* Loading Indicator */
 .loading-indicator {
-    text-align: center;
-    font-size: 1.4rem;
-    color: var(--primary-color);
-    margin-top: 2rem;
     animation: pulse 1.5s infinite ease-in-out;
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    text-align: center;
 }
 
 @keyframes pulse {
@@ -277,19 +291,19 @@ body {
 
 /* Custom Modal Styling (consistent with new design) */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
     display: flex;
+    height: 100%;
     justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    left: 0;
     opacity: 0;
-    visibility: hidden;
+    position: fixed;
+    top: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    visibility: hidden;
+    width: 100%;
+    z-index: 1000;
 }
 
 .modal-overlay.show {
@@ -298,18 +312,18 @@ body {
 }
 
 .modal-content {
+    animation: modalPopIn 0.4s ease-out forwards;
     background-color: var(--header-bg);
-    padding: 3rem; /* More padding */
+    border: 1px solid var(--border-color);
     border-radius: 15px; /* More rounded */
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Stronger shadow */
-    width: 90%;
     max-width: 500px; /* Slightly wider modal */
-    text-align: center;
+    padding: 3rem; /* More padding */
     position: relative;
+    text-align: center;
     transform: translateY(-30px); /* More pronounced initial lift */
     transition: transform 0.4s ease-out;
-    border: 1px solid var(--border-color);
-    animation: modalPopIn 0.4s ease-out forwards;
+    width: 90%;
 }
 
 @keyframes modalPopIn {
@@ -328,13 +342,13 @@ body {
 }
 
 .modal-content .close-button {
-    position: absolute;
-    top: 1.2rem;
-    right: 1.5rem;
-    font-size: 2.2rem; /* Larger close button */
-    font-weight: bold;
     color: #888;
     cursor: pointer;
+    font-size: 2.2rem; /* Larger close button */
+    font-weight: bold;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.2rem;
     transition: color 0.2s ease;
 }
 
@@ -343,38 +357,38 @@ body {
 }
 
 .modal-content #modal-title {
-    font-size: 2rem; /* Larger modal title */
     color: var(--primary-color);
-    margin-bottom: 1.2rem;
+    font-size: 2rem; /* Larger modal title */
     font-weight: 700;
+    margin-bottom: 1.2rem;
 }
 
 .modal-content #modal-message {
-    font-size: 1.15rem; /* Larger modal message */
     color: var(--text-color);
+    font-size: 1.15rem; /* Larger modal message */
     margin-bottom: 2.5rem;
 }
 
 .modal-content .button {
-    padding: 1rem 2.5rem; /* Larger modal button */
-    font-size: 1.1rem;
-    border-radius: 10px;
     background-color: var(--accent-color);
+    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem; /* Larger modal button */
 }
 
 .modal-content .button:hover {
     background-color: #e07b0e;
-    transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 /* Responsive adjustments for account.html */
 @media (max-width: 768px) {
     .login-widget-container {
-        padding: 2rem 1.5rem;
         border-radius: 10px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        padding: 2rem 1.5rem;
     }
 
     .account-main .section-title {
@@ -394,9 +408,9 @@ body {
     }
 
     .form-group input {
-        padding: 0.8rem 1rem;
-        font-size: 1rem;
         border-radius: 8px;
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
     }
 
     .form-actions {
@@ -406,9 +420,9 @@ body {
     }
 
     .form-actions .button {
-        padding: 0.9rem 1.2rem;
-        font-size: 1rem;
         border-radius: 8px;
+        font-size: 1rem;
+        padding: 0.9rem 1.2rem;
     }
 
     .profile-section .user-info {
@@ -416,13 +430,13 @@ body {
     }
 
     .profile-section .logout-button {
-        padding: 0.9rem 1.5rem;
         font-size: 1rem;
+        padding: 0.9rem 1.5rem;
     }
 
     .modal-content {
-        padding: 2rem;
         border-radius: 10px;
+        padding: 2rem;
     }
     .modal-content #modal-title {
         font-size: 1.5rem;
@@ -431,8 +445,8 @@ body {
         font-size: 1rem;
     }
     .modal-content .button {
-        padding: 0.7rem 1.5rem;
         font-size: 0.9rem;
+        padding: 0.7rem 1.5rem;
     }
 }
 
@@ -448,12 +462,12 @@ body {
         font-size: 1.3rem;
     }
     .form-group input {
-        padding: 0.7rem 0.8rem;
         font-size: 0.9rem;
+        padding: 0.7rem 0.8rem;
     }
     .form-actions .button {
-        padding: 0.8rem 1rem;
         font-size: 0.9rem;
+        padding: 0.8rem 1rem;
     }
     .modal-content {
         padding: 1.5rem;
