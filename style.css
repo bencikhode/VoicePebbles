@@ -9,6 +9,13 @@
   --dropdown-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   --text-color: #333;
   --slogan-color: #1366a5; /* Deep Blue for Slogan */
+
+  /* NEW: Footer specific colors, harmonized with existing variables */
+  --footer-bg: #ffffff; /* Dark blue-grey */
+  --footer-text-color: #000000; /* Light grey */
+  --footer-link-color: #3498db; /* Brighter blue for links */
+  --footer-heading-color: #000000; /* White for headings */
+  --footer-bottom-bg: #633c3c; /* Even darker for bottom bar */
 }
 
 /* ---------- Global Reset ---------- */
@@ -19,7 +26,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', sans-serif; /* Keeping your original font */
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
@@ -254,7 +261,7 @@ body {
   display: inline-block;
   padding: 0.875rem 2rem;
   background-color: var(--accent-color);
-  color: var(--dropdown-bg);
+  color: var(--dropdown-bg); /* This variable is not defined, using white as fallback */
   text-decoration: none;
   font-weight: 600;
   border-radius: 6px;
@@ -262,6 +269,11 @@ body {
   position: relative;
   z-index: 2;
 }
+/* Fallback for --dropdown-bg if not defined */
+.textwidget.custom-html-widget a.button {
+    color: white;
+}
+
 
 .textwidget.custom-html-widget a.button:hover {
   background-color: #e07b0e;
@@ -303,7 +315,7 @@ body {
 }
 
 .feature-item {
-  background-color: var(--dropdown-bg);
+  background-color: var(--header-bg); /* Changed from --dropdown-bg */
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: var(--dropdown-shadow);
@@ -353,7 +365,7 @@ body {
 
 .carousel-item {
   flex: 0 0 280px;
-  background-color: var(--dropdown-bg);
+  background-color: var(--header-bg); /* Changed from --dropdown-bg */
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 1.5rem;
@@ -395,7 +407,7 @@ body {
 
 .carousel-prev, .carousel-next {
   background-color: var(--accent-color);
-  color: var(--dropdown-bg);
+  color: white; /* Changed from --dropdown-bg */
   border: none;
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
@@ -473,7 +485,7 @@ body {
   display: inline-block;
   padding: 0.875rem 2rem;
   background-color: var(--accent-color);
-  color: var(--dropdown-bg);
+  color: white; /* Changed from --dropdown-bg */
   text-decoration: none;
   font-weight: 600;
   border-radius: 6px;
@@ -516,7 +528,7 @@ body {
 }
 
 .pricing-item {
-  background-color: var(--dropdown-bg);
+  background-color: var(--header-bg); /* Changed from --dropdown-bg */
   padding: 2rem;
   border-radius: 8px;
   box-shadow: var(--dropdown-shadow);
@@ -574,7 +586,7 @@ body {
   display: inline-block;
   padding: 0.875rem 2rem;
   background-color: var(--accent-color);
-  color: var(--dropdown-bg);
+  color: white; /* Changed from --dropdown-bg */
   text-decoration: none;
   font-weight: 600;
   border-radius: 6px;
@@ -650,116 +662,492 @@ body {
   margin: 0;
 }
 
-/* ---------- Responsive Design (All Sections) ---------- */
-@media (max-width: 768px) {
-  .front-page-1 {
-    min-height: 400px;
-  }
-
-  .wrap {
-    padding: 1.5rem;
-  }
-
-  .widget_text.widget_custom_html {
-    padding: 1.5rem;
-    max-width: 90%;
-  }
-
-  .widget-title {
-    font-size: 1.75rem;
-  }
-
-  .textwidget.custom-html-widget {
-    font-size: 1rem;
-  }
-
-  .materials-library {
-    padding: 2rem 1rem;
-  }
-
-  .online-games {
-    padding: 2rem 1rem;
-  }
-
-  .pricing {
-    padding: 2rem 1rem;
-  }
-
-  .about {
-    padding: 2rem 1rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .section-intro {
-    font-size: 1rem;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .pricing-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .features-carousel {
-    flex-direction: row;
-  }
-
-  .carousel-item {
-    flex: 0 0 80%;
-  }
-
-  .games-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .game-item {
-    max-width: 300px;
-    margin: 0 auto;
-  }
-
-  .game-image {
-    height: 120px;
-  }
-}
-
-/* ---------- Footer ---------- */
+/* ---------- Footer Styles ---------- */
 footer {
-  background-color: var(--primary-color);
-  color: var(--dropdown-bg);
-  text-align: center;
-  padding: 2rem 1.25rem;
+    background-color: var(--footer-bg);
+    color: var(--footer-text-color);
+    padding-top: 3rem;
+    font-size: 0.95rem;
+    flex-shrink: 0; /* Prevent footer from shrinking */
 }
 
-footer p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Flexible columns */
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
 }
 
-footer ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
+.footer-section {
+    padding: 1rem 0;
 }
 
-footer a {
-  color: var(--dropdown-bg);
-  text-decoration: none;
-  font-size: 0.9rem;
+.footer-section h4 {
+    color: var(--footer-heading-color);
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
 }
 
-footer a:hover {
-  color: var(--accent-color);
+.footer-section h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--accent-color); /* Highlight for headings */
+    border-radius: 1px;
+}
+
+/* Footer Brand/Logo Section */
+.footer-brand .logo-container {
+    margin-bottom: 1rem;
+}
+
+.footer-brand .logo {
+    height: 60px; /* Slightly larger logo in footer */
+}
+
+.footer-brand .company-name {
+    color: var(--footer-heading-color);
+    font-size: 2rem; /* Larger company name */
+}
+
+.footer-brand .company-name a {
+    color: var(--footer-heading-color); /* Ensure link color is white */
+}
+
+.footer-brand .slogan {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.9rem;
+}
+
+.footer-brand .brand-description {
+    color: rgba(0, 0, 0, 0.8);
+    line-height: 1.8;
+    margin-top: 1.5rem;
+}
+
+/* Footer Links Section */
+.footer-links ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links ul li a {
+    color: var(--footer-text-color);
+    transition: color 0.3s ease;
+    text-decoration: none; /* NEW: Remove underline from quick links */
+    display: flex; /* Make it a flex container to align icon and text */
+    align-items: center;
+    gap: 0.5rem; /* Space between icon and text */
+}
+
+.footer-links ul li a:hover {
+    color: var(--footer-link-color);
+    /* text-decoration: underline; -- Removed as per request */
+}
+
+/* Style for the icons within quick links */
+.footer-links ul li a i {
+    font-size: 1.1rem; /* Adjust icon size */
+    color: var(--footer-link-color); /* Icon color */
+    transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover i {
+    color: var(--accent-color); /* Change icon color on hover */
+}
+
+
+/* Footer Contact Section */
+.footer-contact p {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start; /* Align icon and text at the top */
+    gap: 0.8rem;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.footer-contact p i {
+    color: var(--footer-link-color);
+    font-size: 1.1rem;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    margin-top: 0.2em; /* Adjust icon vertical alignment */
+}
+
+.footer-contact p a {
+    color: var(--footer-text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-contact p a:hover {
+    color: var(--footer-link-color);
+    text-decoration: underline;
+}
+
+/* Footer Social Icons */
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-icons a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--footer-heading-color);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none; /* NEW: Remove underline from social icons */
+}
+
+.social-icons a:hover {
+    background-color: var(--footer-link-color);
+    transform: translateY(-3px);
+    color: white;
+}
+
+/* Footer Bottom (Copyright) */
+.footer-bottom {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: var(--footer-bottom-bg);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+}
+
+/* Modal Styles (General, reused from account.js) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--header-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.modal-content .close-button:hover {
+    color: #333;
+}
+
+#modal-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+#modal-message {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+}
+
+#modal-ok-button {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .site-header {
+        padding: 0.8rem 1rem;
+    }
+    .company-name {
+        font-size: 1.6rem;
+    }
+    .slogan {
+        font-size: 0.8rem;
+    }
+    .main-nav ul {
+        gap: 1.5rem;
+    }
+    .main-nav ul li a {
+        font-size: 1rem;
+    }
+    .hero h1 {
+        font-size: 3rem;
+    }
+    .hero p {
+        font-size: 1.1rem;
+    }
+    .hero .button {
+        padding: 0.9rem 2rem;
+        font-size: 1.1rem;
+    }
+    .features-section h2, .cta-section h2, .pricing-section h2, .contact-section h2 {
+        font-size: 2.4rem;
+    }
+    .features-grid, .pricing-grid, .contact-content {
+        gap: 1.5rem;
+    }
+    .feature-item {
+        padding: 2rem;
+    }
+    .feature-item i {
+        font-size: 3rem;
+    }
+    .feature-item h3 {
+        font-size: 1.6rem;
+    }
+    .pricing-plan h3 {
+        font-size: 2rem;
+    }
+    .pricing-plan .price {
+        font-size: 3rem;
+    }
+    .contact-info, .contact-form-container {
+        padding: 2rem;
+    }
+    .contact-info h3, .contact-form-container h3 {
+        font-size: 1.8rem;
+    }
+    .footer-container {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 2rem;
+    }
+    .footer-brand .company-name {
+        font-size: 1.8rem;
+    }
+    .footer-section h4 {
+        font-size: 1.2rem;
+    }
 }
 
 @media (max-width: 768px) {
-  footer ul {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+    .site-header {
+        flex-wrap: wrap;
+        padding: 0.8rem 1rem;
+    }
+    .logo-container {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+    .main-nav {
+        width: 100%;
+        order: 3; /* Push nav to new line */
+        text-align: center;
+    }
+    .menu-toggle {
+        display: block; /* Show hamburger icon */
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        z-index: 600; /* Above nav list */
+    }
+    .main-nav ul {
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--header-bg);
+        position: absolute;
+        top: 100%; /* Position below header */
+        left: 0;
+        max-height: 0; /* Hidden by default */
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, border-top 0.3s ease;
+        border-top: 1px solid transparent;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+        z-index: 550;
+    }
+
+    .main-nav.nav-collapsed ul {
+        max-height: 300px; /* Adjust as needed for content */
+        border-top: 1px solid var(--border-color);
+        display: flex; /* Ensure it's flex when open */
+    }
+
+    .main-nav ul li {
+        width: 100%;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .main-nav ul li:last-child {
+        border-bottom: none;
+    }
+    .main-nav ul li a {
+        padding: 0.75rem 1rem;
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    .main-nav ul li a::after {
+        display: none; /* Hide underline for mobile menu items */
+    }
+
+    .hero {
+        padding: 3rem 1rem;
+    }
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    .hero p {
+        font-size: 1rem;
+    }
+    .hero .button {
+        padding: 0.8rem 1.8rem;
+        font-size: 1rem;
+    }
+    .features-section, .cta-section, .pricing-section, .contact-section {
+        padding: 3rem 1rem;
+    }
+    .features-section h2, .cta-section h2, .pricing-section h2, .contact-section h2 {
+        font-size: 2rem;
+    }
+    .features-grid, .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+    .feature-item {
+        padding: 1.5rem;
+    }
+    .feature-item i {
+        font-size: 2.8rem;
+    }
+    .feature-item h3 {
+        font-size: 1.4rem;
+    }
+    .pricing-plan {
+        padding: 2rem;
+    }
+    .pricing-plan h3 {
+        font-size: 1.8rem;
+    }
+    .pricing-plan .price {
+        font-size: 2.8rem;
+    }
+    .contact-info, .contact-form-container {
+        flex: 1 1 100%; /* Stack on small screens */
+        padding: 1.5rem;
+    }
+    .contact-info h3, .contact-form-container h3 {
+        font-size: 1.6rem;
+    }
+    .footer-container {
+        grid-template-columns: 1fr; /* Stack footer sections */
+        text-align: center;
+        padding: 1.5rem 1rem 1.5rem;
+    }
+    .footer-section h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .footer-brand .logo-container {
+        justify-content: center;
+    }
+    .footer-contact p {
+        justify-content: center;
+    }
+    .social-icons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        height: 40px;
+    }
+    .company-name {
+        font-size: 1.4rem;
+    }
+    .slogan {
+        font-size: 0.75rem;
+    }
+    .hero h1 {
+        font-size: 2rem;
+    }
+    .hero p {
+        font-size: 0.95rem;
+    }
+    .hero .button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    .features-section h2, .cta-section h2, .pricing-section h2, .contact-section h2 {
+        font-size: 1.8rem;
+    }
+    .feature-item i {
+        font-size: 2.5rem;
+    }
+    .feature-item h3 {
+        font-size: 1.2rem;
+    }
+    .pricing-plan h3 {
+        font-size: 1.6rem;
+    }
+    .pricing-plan .price {
+        font-size: 2.5rem;
+    }
+    .footer-brand .company-name {
+        font-size: 1.6rem;
+    }
+    .footer-brand .logo {
+        height: 50px;
+    }
+    .footer-section h4 {
+        font-size: 1.1rem;
+    }
+    .footer-contact p, .footer-links ul li {
+        font-size: 0.9rem;
+    }
+    .social-icons a {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    .footer-bottom {
+        font-size: 0.75rem;
+        padding: 1rem;
+    }
 }
